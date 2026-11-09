@@ -1,0 +1,55 @@
+{
+"skeleton": {
+	"hash": "0JFlLicNACM",
+	"spine": "4.1.24",
+	"x": -142.13,
+	"y": -69.1,
+	"width": 322,
+	"height": 119,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/tool_keo_cam/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "x": 3.68, "y": -70.47 },
+	{ "name": "keo_cam_2", "parent": "bone", "length": 47.68, "rotation": 160.1, "x": -40.14, "y": 81.56 },
+	{ "name": "keo_cam_1", "parent": "bone", "length": 43.24, "rotation": -170.91, "x": -39.28, "y": 81.13 }
+],
+"slots": [
+	{ "name": "keo_cam_2", "bone": "keo_cam_2", "attachment": "keo_cam_2" },
+	{ "name": "keo_cam_1", "bone": "keo_cam_1", "attachment": "keo_cam_1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"keo_cam_1": {
+				"keo_cam_1": { "x": -52.96, "y": 13.81, "rotation": 170.91, "width": 322, "height": 89 }
+			},
+			"keo_cam_2": {
+				"keo_cam_2": { "x": -59.59, "y": 2.04, "rotation": -160.1, "width": 314, "height": 116 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"bones": {
+			"keo_cam_2": {
+				"rotate": [
+					{ "value": 2.68 },
+					{ "time": 0.1667, "value": -68.44 },
+					{ "time": 0.3333, "value": 2.68 }
+				]
+			},
+			"keo_cam_1": {
+				"rotate": [
+					{ "value": -0.58 },
+					{ "time": 0.1667, "value": 44.14 },
+					{ "time": 0.3333, "value": -0.58 }
+				]
+			}
+		}
+	}
+}
+}

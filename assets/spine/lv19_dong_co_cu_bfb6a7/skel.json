@@ -1,0 +1,92 @@
+{
+"skeleton": {
+	"hash": "yU9H8jy5VMg",
+	"spine": "4.1.24",
+	"x": -119.06,
+	"y": -239.7,
+	"width": 474.62,
+	"height": 338.38,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv19_dong_co_cu/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "co_le", "parent": "root", "x": 2.8, "y": -645.68 },
+	{ "name": "co_le3", "parent": "co_le", "rotation": 143.65, "x": 8.2, "y": 649.85 },
+	{ "name": "dong_co_ban", "parent": "co_le", "x": -17.89, "y": 646.1 }
+],
+"slots": [
+	{ "name": "co_le", "bone": "co_le3", "color": "ffffff00", "attachment": "co_le" },
+	{ "name": "dong_co_ban", "bone": "dong_co_ban", "color": "ffffff00", "attachment": "dong_co_ban" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"co_le": {
+				"co_le": { "x": -166.69, "y": -12.32, "rotation": -143.65, "width": 406, "height": 310 }
+			},
+			"dong_co_ban": {
+				"dong_co_ban": { "x": 4.04, "y": -7.25, "width": 216, "height": 211 }
+			}
+		}
+	}
+],
+"animations": {
+	"stop": {
+		"slots": {
+			"dong_co_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"van": {
+		"slots": {
+			"co_le": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 4.3333, "color": "ffffffff" },
+					{ "time": 4.6667, "color": "ffffff00" }
+				]
+			},
+			"dong_co_ban": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 3.6667, "color": "ffffffff" },
+					{ "time": 4, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"co_le3": {
+				"rotate": [
+					{},
+					{ "time": 0.6, "value": 151.11 },
+					{ "time": 1.2 },
+					{ "time": 1.8, "value": 151.11 },
+					{ "time": 2.4 },
+					{ "time": 3, "value": 151.11, "curve": "stepped" },
+					{ "time": 3.3333, "value": 151.11 },
+					{ "time": 4, "value": 54.74 }
+				],
+				"translate": [
+					{ "time": 3.3333 },
+					{ "time": 4, "x": 23.42, "y": 273.21 }
+				]
+			},
+			"dong_co_ban": {
+				"rotate": [
+					{ "time": 3.3333 },
+					{ "time": 4, "value": -77.61 }
+				],
+				"translate": [
+					{ "time": 3.3333 },
+					{ "time": 4, "x": -39.03, "y": -621.88 }
+				]
+			}
+		}
+	}
+}
+}

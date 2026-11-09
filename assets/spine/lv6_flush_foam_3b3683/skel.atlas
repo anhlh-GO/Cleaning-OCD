@@ -1,0 +1,16 @@
+lv6_flush_foam.webp
+size:1440,1264
+filter:Linear,Linear
+pma:false
+1
+bounds:2,495,765,1176
+rotate:90
+3
+bounds:2,2,491,528
+rotate:90
+4
+bounds:1015,13,422,480
+flush
+bounds:532,71,422,481
+rotate:90
+

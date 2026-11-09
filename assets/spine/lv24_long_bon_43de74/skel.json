@@ -1,0 +1,95 @@
+{
+"skeleton": {
+	"hash": "e4qmuuYMT1s",
+	"spine": "4.1.24",
+	"x": -113.92,
+	"y": -93.59,
+	"width": 243,
+	"height": 207,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv24_long_bon/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "3 copy 2", "parent": "root", "x": -14.52, "y": -468.4 },
+	{ "name": "3 copy 3", "parent": "3 copy 2", "x": 22.65, "y": 470.56 }
+],
+"slots": [
+	{ "name": "bon_clip_end", "bone": "3 copy 2", "attachment": "bon_clip" },
+	{ "name": "nuoc_ban_1", "bone": "3 copy 3", "color": "ffffff00", "attachment": "nuoc_ban_1" },
+	{ "name": "nuoc_ban_2", "bone": "3 copy 3", "color": "ffffff00", "attachment": "nuoc_ban_2" },
+	{ "name": "bon_clip", "bone": "3 copy 2" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"bon_clip_end": {
+				"bon_clip": {
+					"type": "clipping",
+					"end": "bon_clip",
+					"vertexCount": 17,
+					"vertices": [ -287.37, 883.46, -136.42, 510.28, -123.33, 468.7, -102.54, 433.28, -79.44, 409.41, -53.26, 389.39, -29.39, 379.38, 2.95, 373.22, 27.59, 370.91, 53.77, 372.45, 82.77, 379.97, 112.77, 398.98, 143.79, 426.7, 169.66, 466.83, 186.96, 521.49, 263.49, 693.67, 336.14, 883.77 ],
+					"color": "ce3a3a00"
+				}
+			},
+			"nuoc_ban_1": {
+				"nuoc_ban_1": { "x": -0.54, "y": 7.74, "width": 243, "height": 207 }
+			},
+			"nuoc_ban_2": {
+				"nuoc_ban_2": { "x": -0.54, "y": 7.74, "width": 243, "height": 207 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"nuoc_ban_2": {
+				"rgba": [
+					{ "color": "ffffffff" },
+					{ "time": 0.1667, "color": "8fd2ffff", "curve": "stepped" },
+					{ "time": 1.3333, "color": "8fd2ffff" },
+					{ "time": 2, "color": "0ee5ff00" }
+				]
+			}
+		},
+		"bones": {
+			"3 copy 3": {
+				"rotate": [
+					{},
+					{ "time": 0.1667, "value": -120 },
+					{ "time": 0.3333, "value": -240 },
+					{ "time": 0.5, "value": -360 },
+					{ "time": 0.6667, "value": -480 },
+					{ "time": 0.8333, "value": -600 },
+					{ "time": 1, "value": -720 },
+					{ "time": 1.1667, "value": -840 },
+					{ "time": 1.3333, "value": -960 },
+					{ "time": 1.5, "value": -1080 },
+					{ "time": 1.6667, "value": -1200 },
+					{ "time": 1.8333, "value": -1320 },
+					{ "time": 2, "value": -1440 }
+				],
+				"translate": [
+					{},
+					{ "time": 2, "x": 5.82, "y": -26.19 }
+				],
+				"scale": [
+					{},
+					{ "time": 2, "x": 0.266, "y": 0.266 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"nuoc_ban_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

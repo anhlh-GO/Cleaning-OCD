@@ -1,0 +1,10 @@
+tool_rust.webp
+size:380,200
+filter:Linear,Linear
+pma:false
+tool_rust_1
+bounds:2,2,196,256
+rotate:90
+tool_rust_2
+bounds:260,82,116,116
+

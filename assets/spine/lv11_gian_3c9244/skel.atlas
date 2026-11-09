@@ -1,0 +1,15 @@
+lv11_gian.webp
+size:256,44
+filter:Linear,Linear
+pma:false
+gian_1
+bounds:233,11,20,29
+gian_2
+bounds:203,7,28,33
+gian_3
+bounds:156,16,24,45
+rotate:90
+gian_4
+bounds:2,2,38,152
+rotate:90
+

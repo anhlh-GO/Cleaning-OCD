@@ -1,0 +1,73 @@
+{
+"skeleton": { "hash": "OD1b6oLZRvM", "spine": "4.1.24", "images": "./image/", "audio": "D:/W73_skincare ASMR/Spine_38/fx_target/image" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "fx_target", "parent": "root" }
+],
+"slots": [
+	{ "name": "fx_target", "bone": "fx_target" }
+],
+"skins": [
+	{
+		"name": "s1",
+		"attachments": {
+			"fx_target": {
+				"s1": { "width": 79, "height": 79 }
+			}
+		}
+	},
+	{
+		"name": "s2",
+		"attachments": {
+			"fx_target": {
+				"s1": { "name": "s2", "width": 122, "height": 122 }
+			}
+		}
+	},
+	{
+		"name": "s3",
+		"attachments": {
+			"fx_target": {
+				"s1": { "name": "s3", "width": 216, "height": 216 }
+			}
+		}
+	},
+	{
+		"name": "s4",
+		"attachments": {
+			"fx_target": {
+				"s1": { "name": "s4", "width": 279, "height": 280 }
+			}
+		}
+	},
+	{
+		"name": "s5",
+		"attachments": {
+			"fx_target": {
+				"s1": { "name": "s5", "width": 379, "height": 379 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"fx_target": {
+				"attachment": [
+					{ "name": "s1" }
+				]
+			}
+		},
+		"bones": {
+			"fx_target": {
+				"rotate": [
+					{},
+					{ "time": 1.3333, "value": -120 },
+					{ "time": 2.6667, "value": -240 },
+					{ "time": 4, "value": -360 }
+				]
+			}
+		}
+	}
+}
+}

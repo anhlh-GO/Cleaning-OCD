@@ -1,0 +1,353 @@
+{
+"skeleton": {
+	"hash": "bL7K5zVsJfo",
+	"spine": "4.1.24",
+	"x": -275.48,
+	"y": -155.68,
+	"width": 547,
+	"height": 402,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv24_nap/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "ket_nuoc_1", "parent": "root", "x": 51.07, "y": -246.84 },
+	{ "name": "bone", "parent": "ket_nuoc_1", "x": -268.78, "y": 419.78 },
+	{ "name": "bone2", "parent": "ket_nuoc_1", "x": 154.02, "y": 422.8 }
+],
+"slots": [
+	{ "name": "ket_nuoc_1", "bone": "ket_nuoc_1", "color": "ffffff00", "attachment": "ket_nuoc_1" },
+	{ "name": "ket_nuoc_2", "bone": "bone2", "color": "ffffff00", "attachment": "ket_nuoc_2" },
+	{ "name": "ket_nuoc_3", "bone": "bone2", "color": "ffffff00", "attachment": "ket_nuoc_3" },
+	{ "name": "ket_nuoc_ban_outline", "bone": "ket_nuoc_1", "color": "ffffff00", "attachment": "ket_nuoc_ban_outline" },
+	{ "name": "ket_nuoc_nap", "bone": "bone", "color": "ffffff00", "attachment": "ket_nuoc_nap" },
+	{ "name": "ket_nuoc_nap_ouline", "bone": "ket_nuoc_1", "color": "ffffff00", "attachment": "ket_nuoc_nap_ouline" },
+	{ "name": "ket_nuoc_che", "bone": "ket_nuoc_1", "color": "ffffff00", "attachment": "ket_nuoc_che" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"ket_nuoc_1": {
+				"ket_nuoc_1": { "x": -51.05, "y": 445.16, "width": 525, "height": 82 }
+			},
+			"ket_nuoc_2": {
+				"ket_nuoc_2": { "x": -206.07, "y": 16.36, "width": 505, "height": 66 }
+			},
+			"ket_nuoc_3": {
+				"ket_nuoc_3": { "x": -206.07, "y": 16.36, "width": 505, "height": 66 }
+			},
+			"ket_nuoc_ban_outline": {
+				"ket_nuoc_ban_outline": { "x": -52.05, "y": 439.16, "width": 525, "height": 86 }
+			},
+			"ket_nuoc_che": {
+				"ket_nuoc_che": { "x": -52.05, "y": 264.66, "width": 447, "height": 347 }
+			},
+			"ket_nuoc_nap": {
+				"ket_nuoc_nap": { "x": 215.73, "y": -0.62, "width": 527, "height": 128 }
+			},
+			"ket_nuoc_nap_ouline": {
+				"ket_nuoc_nap_ouline": { "x": -53.05, "y": 419.16, "width": 547, "height": 148 }
+			}
+		}
+	}
+],
+"animations": {
+	"1": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap_ouline": {
+				"rgba": [
+					{ "color": "ffffffff" },
+					{ "time": 1, "color": "ffffff8a" },
+					{ "time": 2, "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"2": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.6667, "color": "ffffffff" },
+					{ "time": 1, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"rotate": [
+					{},
+					{ "time": 1, "value": 67.7 }
+				],
+				"translate": [
+					{},
+					{ "time": 1, "x": -619.1, "y": 147.98 }
+				]
+			}
+		}
+	},
+	"3": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_3": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 2, "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"4": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"4a": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_ban_outline": {
+				"rgba": [
+					{
+						"color": "fffffffe",
+						"curve": [ 0.222, 1, 0.444, 1, 0.222, 1, 0.444, 1, 0.222, 1, 0.444, 1, 0.222, 1, 0.444, 0.28 ]
+					},
+					{
+						"time": 0.6667,
+						"color": "ffffff48",
+						"curve": [ 0.889, 1, 1.111, 1, 0.889, 1, 1.111, 1, 0.889, 1, 1.111, 1, 0.889, 0.28, 1.111, 1 ]
+					},
+					{ "time": 1.3333, "color": "fffffffe" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"5": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_3": {
+				"rgba": [
+					{ "color": "ffffffff" },
+					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"bone2": {
+				"translate": [
+					{},
+					{ "time": 1.3333, "x": -6.46, "y": -10.76 }
+				],
+				"scale": [
+					{},
+					{ "time": 1.3333, "x": 0.964, "y": 0.291 }
+				]
+			}
+		}
+	},
+	"6": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"7": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop_1": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop_2": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop_3": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop_4": {
+		"slots": {
+			"ket_nuoc_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_che": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ket_nuoc_nap": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

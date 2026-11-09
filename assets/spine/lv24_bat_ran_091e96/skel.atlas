@@ -1,0 +1,25 @@
+lv24_bat_ran.webp
+size:716,1054
+filter:Linear,Linear
+pma:false
+scale:0.625
+1 copy
+bounds:2,2,328,787
+kep_tim
+bounds:332,522,267,363
+rotate:90
+kep_tim_2
+bounds:663,181,39,79
+ran
+bounds:2,808,244,629
+rotate:90
+thung_dung_ran_1 copy
+bounds:633,791,261,81
+rotate:90
+thung_dung_ran_2 copy
+bounds:332,262,258,356
+rotate:90
+thung_dung_ran_tren copy
+bounds:332,2,258,329
+rotate:90
+

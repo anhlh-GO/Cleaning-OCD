@@ -1,0 +1,117 @@
+{
+"skeleton": {
+	"hash": "fnhGhQf6cGw",
+	"spine": "4.1.24",
+	"x": -124.03,
+	"y": -171.21,
+	"width": 632,
+	"height": 1037,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv10_kep_cat_mong/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "kep_duoi", "parent": "root", "x": 63.11, "y": -268.97 },
+	{ "name": "kep_tren", "parent": "kep_duoi", "length": 174.29, "rotation": -73.25, "x": -56.69, "y": 366.49 },
+	{ "name": "kep_duoi3", "parent": "kep_duoi", "length": 90.69, "rotation": -173.45, "x": -59.65, "y": 367.97 }
+],
+"slots": [
+	{ "name": "kep_duoi", "bone": "kep_duoi3", "color": "ffffff00", "attachment": "kep_duoi" },
+	{ "name": "kep_tren", "bone": "kep_tren", "color": "ffffff00", "attachment": "kep_tren" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"kep_duoi": {
+				"kep_duoi": { "x": -213.3, "y": -205.31, "rotation": 173.45, "width": 632, "height": 783 }
+			},
+			"kep_tren": {
+				"kep_tren": { "x": -204.59, "y": 186.93, "rotation": 73.25, "width": 451, "height": 1037 }
+			}
+		}
+	}
+],
+"animations": {
+	"cut": {
+		"slots": {
+			"kep_duoi": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"kep_tren": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"kep_tren": {
+				"rotate": [
+					{
+						"curve": [ 0.058, 0, 0.202, 25.34 ]
+					},
+					{
+						"time": 0.2333,
+						"value": 34.21,
+						"curve": [ 0.3, 34.21, 0.456, 7.9 ]
+					},
+					{ "time": 0.5 }
+				],
+				"translate": [
+					{
+						"curve": [ 0.058, 0, 0.202, 123.17, 0.058, 0, 0.202, -134.82 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 166.3,
+						"y": -182.03,
+						"curve": [ 0.3, 166.3, 0.456, 38.4, 0.3, -182.03, 0.456, -42.03 ]
+					},
+					{ "time": 0.5 }
+				]
+			},
+			"kep_duoi3": {
+				"rotate": [
+					{
+						"curve": [ 0.058, 0, 0.202, -28.16 ]
+					},
+					{
+						"time": 0.2333,
+						"value": -38.02,
+						"curve": [ 0.3, -38.02, 0.456, -8.78 ]
+					},
+					{ "time": 0.5 }
+				],
+				"translate": [
+					{
+						"curve": [ 0.058, 0, 0.202, 17.91, 0.058, 0, 0.202, 30.11 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 24.18,
+						"y": 40.66,
+						"curve": [ 0.3, 24.18, 0.456, 5.58, 0.3, 40.66, 0.456, 9.39 ]
+					},
+					{ "time": 0.5 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"kep_duoi": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"kep_tren": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

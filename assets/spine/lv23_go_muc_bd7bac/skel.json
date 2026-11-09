@@ -1,0 +1,102 @@
+{
+"skeleton": {
+	"hash": "BddnyA2ItRs",
+	"spine": "4.1.24",
+	"x": -50.59,
+	"y": -16.83,
+	"width": 89,
+	"height": 118,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv23_go_muc/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "go_muc", "parent": "root", "x": -97.55, "y": -75.89 },
+	{ "name": "go_muc3", "parent": "go_muc", "x": 95.62, "y": 96.69 }
+],
+"slots": [
+	{ "name": "go_muc", "bone": "go_muc3", "color": "ffffff00", "attachment": "go_muc" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"go_muc": {
+				"go_muc": { "x": -4.16, "y": 21.37, "width": 89, "height": 118 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"go_muc": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 1.7333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"go_muc3": {
+				"rotate": [
+					{},
+					{ "time": 0.0667, "value": -2.55 },
+					{ "time": 0.1667 },
+					{ "time": 0.2333, "value": -2.55 },
+					{ "time": 0.3333 },
+					{ "time": 0.4, "value": -2.55 },
+					{ "time": 0.5 },
+					{ "time": 0.5667, "value": -2.55 },
+					{ "time": 0.6667 },
+					{ "time": 0.7333, "value": -2.55 },
+					{ "time": 0.8333 },
+					{ "time": 0.9, "value": -2.55 },
+					{ "time": 1 },
+					{ "time": 1.0667, "value": -2.55 },
+					{ "time": 1.1667 },
+					{ "time": 1.2333, "value": -2.55 },
+					{ "time": 1.3333 },
+					{ "time": 1.4, "value": -2.55 },
+					{ "time": 1.5 },
+					{ "time": 1.5667, "value": -2.55 },
+					{ "time": 1.7333, "value": -155.95 }
+				],
+				"translate": [
+					{},
+					{ "time": 0.0667, "x": 2.3 },
+					{ "time": 0.1667 },
+					{ "time": 0.2333, "x": 2.3 },
+					{ "time": 0.3333 },
+					{ "time": 0.4, "x": 2.3 },
+					{ "time": 0.5 },
+					{ "time": 0.5667, "x": 2.3 },
+					{ "time": 0.6667 },
+					{ "time": 0.7333, "x": 2.3 },
+					{ "time": 0.8333 },
+					{ "time": 0.9, "x": 2.3 },
+					{ "time": 1 },
+					{ "time": 1.0667, "x": 2.3 },
+					{ "time": 1.1667 },
+					{ "time": 1.2333, "x": 2.3 },
+					{ "time": 1.3333 },
+					{ "time": 1.4, "x": 2.3 },
+					{ "time": 1.5 },
+					{ "time": 1.5667, "x": 2.3 },
+					{ "time": 1.7333, "x": 138.95, "y": 132.78 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"go_muc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

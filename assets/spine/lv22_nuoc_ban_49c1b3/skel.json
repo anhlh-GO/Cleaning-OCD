@@ -1,0 +1,69 @@
+{
+"skeleton": {
+	"hash": "w0HQRIe/xgQ",
+	"spine": "4.1.24",
+	"x": -338.26,
+	"y": -154.62,
+	"width": 658,
+	"height": 737,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv22_nuoc_ban/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "x": -5.25, "y": 150.35 }
+],
+"slots": [
+	{ "name": "nuoc_ban_1", "bone": "bone", "color": "ffffff00", "attachment": "nuoc_ban_1" },
+	{ "name": "nuoc_ban_2", "bone": "bone", "color": "ffffff00", "attachment": "nuoc_ban_2" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"nuoc_ban_1": {
+				"nuoc_ban_1": { "x": -4.01, "y": 63.53, "width": 658, "height": 737 }
+			},
+			"nuoc_ban_2": {
+				"nuoc_ban_2": { "x": -4.01, "y": 63.53, "width": 658, "height": 737 }
+			}
+		}
+	}
+],
+"animations": {
+	"flush": {
+		"slots": {
+			"nuoc_ban_1": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1, "color": "ffffffff" },
+					{ "time": 2.3333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"translate": [
+					{},
+					{ "time": 1, "y": -41.37 },
+					{ "time": 2.3333, "y": -106.69 }
+				],
+				"scale": [
+					{},
+					{ "time": 1, "x": 0.858, "y": 0.858 },
+					{ "time": 2.3333, "x": -0.101, "y": -0.101 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"nuoc_ban_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

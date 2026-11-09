@@ -1,0 +1,49 @@
+{
+"skeleton": {
+	"hash": "STK3MMxUu2o",
+	"spine": "4.1.24",
+	"x": -15,
+	"y": -168.5,
+	"width": 185,
+	"height": 185,
+	"images": "./image/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "tut_hand", "parent": "root", "x": 90.5, "y": -80 }
+],
+"slots": [
+	{ "name": "tut_hand", "bone": "tut_hand", "color": "ffffff00", "attachment": "tut_hand" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"tut_hand": {
+				"tut_hand": { "x": -13, "y": 4, "width": 185, "height": 185 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"tut_hand": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"tut_hand": {
+				"translate": [
+					{},
+					{ "time": 0.6667, "x": 53.17, "y": -71.42 },
+					{ "time": 1.3333 }
+				]
+			}
+		}
+	}
+}
+}

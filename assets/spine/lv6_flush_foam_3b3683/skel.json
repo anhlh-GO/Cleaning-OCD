@@ -1,0 +1,102 @@
+{
+"skeleton": {
+	"hash": "B/DLOcqpUyY",
+	"spine": "4.1.24",
+	"x": -397.74,
+	"y": -320.83,
+	"width": 765,
+	"height": 1176,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv6_flush_foam/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "1", "parent": "root", "x": -8.78, "y": -449.88 },
+	{ "name": "3", "parent": "1", "x": -3.18, "y": 434.56 },
+	{ "name": "flush", "parent": "1", "x": -0.06, "y": 451.21 }
+],
+"slots": [
+	{ "name": "1", "bone": "1", "color": "ffffff00", "attachment": "1" },
+	{ "name": "4", "bone": "1", "color": "ffffff00", "attachment": "4" },
+	{ "name": "3", "bone": "3", "color": "ffffff00", "attachment": "3" },
+	{ "name": "flush", "bone": "flush", "color": "ffffff00", "attachment": "flush" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"1": {
+				"1": { "x": -6.45, "y": 717.05, "width": 765, "height": 1176 }
+			},
+			"3": {
+				"3": { "x": -6.27, "y": 15.49, "width": 491, "height": 528 }
+			},
+			"4": {
+				"4": { "x": -6.95, "y": 454.05, "width": 422, "height": 480 }
+			},
+			"flush": {
+				"flush": { "x": -6.9, "y": 3.33, "width": 422, "height": 481 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"3": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.1667, "color": "ffffffff" },
+					{ "time": 0.3333, "color": "ffffff00" }
+				]
+			},
+			"4": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"flush": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffff8b", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffff8b" },
+					{ "time": 2, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"3": {
+				"scale": [
+					{},
+					{ "time": 0.3333, "x": 0.687, "y": 0.687 }
+				]
+			},
+			"flush": {
+				"rotate": [
+					{},
+					{ "time": 0.3333, "value": 120 },
+					{ "time": 0.6667, "value": 240 },
+					{ "time": 1, "value": 360 },
+					{ "time": 1.3333, "value": 480 },
+					{ "time": 1.6667, "value": 600 },
+					{ "time": 2, "value": 720 }
+				],
+				"translate": [
+					{},
+					{ "time": 2, "x": -10.59, "y": 19.06 }
+				],
+				"scale": [
+					{},
+					{ "time": 0.3333, "x": 0.629, "y": 0.629 },
+					{ "time": 2, "x": 0.081, "y": 0.081 }
+				]
+			}
+		}
+	}
+}
+}

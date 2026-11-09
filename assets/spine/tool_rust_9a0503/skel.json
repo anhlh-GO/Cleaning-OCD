@@ -1,0 +1,60 @@
+{
+"skeleton": {
+	"hash": "ZTgMQfudHe4",
+	"spine": "4.1.24",
+	"x": -136.88,
+	"y": -241.65,
+	"width": 196,
+	"height": 298.07,
+	"images": "./image/",
+	"audio": "D:/W68- Car Wash ASMR/spine_38/tool_rust/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "tool_rust_1", "parent": "root", "x": -11.66, "y": -272.88 },
+	{ "name": "bone", "parent": "tool_rust_1", "x": 11.12, "y": 271.3 }
+],
+"slots": [
+	{ "name": "tool_rust_2", "bone": "bone", "attachment": "tool_rust_2" },
+	{ "name": "tool_rust_1", "bone": "tool_rust_1", "attachment": "tool_rust_1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"tool_rust_1": {
+				"tool_rust_1": { "x": -27.22, "y": 159.23, "width": 196, "height": 256 }
+			},
+			"tool_rust_2": {
+				"tool_rust_2": { "width": 116, "height": 116 }
+			}
+		}
+	}
+],
+"animations": {
+	"off": {
+		"bones": {
+			"bone": {
+				"rotate": [
+					{},
+					{ "time": 0.6667, "value": -120 },
+					{ "time": 1.3333, "value": -240 },
+					{ "time": 2, "value": -360 }
+				]
+			}
+		}
+	},
+	"on": {
+		"bones": {
+			"bone": {
+				"rotate": [
+					{},
+					{ "time": 0.0667, "value": 120 },
+					{ "time": 0.1333, "value": 240 },
+					{ "time": 0.2, "value": 360 }
+				]
+			}
+		}
+	}
+}
+}

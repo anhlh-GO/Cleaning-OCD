@@ -1,0 +1,124 @@
+{
+"skeleton": {
+	"hash": "ijVK0xJxmy4",
+	"spine": "4.1.24",
+	"x": -111.06,
+	"y": -67.07,
+	"width": 300.54,
+	"height": 207.44,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv23_nhip_gap/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "nhip_gap_2", "parent": "root", "x": -1.08, "y": -64.67 },
+	{ "name": "nhip_gap_4", "parent": "nhip_gap_2", "x": -27.89, "y": 59.59 },
+	{ "name": "nhip_gap_1", "parent": "nhip_gap_2", "x": -26.91, "y": 56.62 }
+],
+"slots": [
+	{ "name": "nhip_gap_2", "bone": "nhip_gap_4", "color": "ffffff00", "attachment": "Layer 1" },
+	{ "name": "nhip_gap_1", "bone": "nhip_gap_1", "color": "ffffff00", "attachment": "Layer 2" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"nhip_gap_1": {
+				"Layer 2": { "x": 69.17, "y": 24.3, "rotation": -1.31, "width": 293, "height": 160 }
+			},
+			"nhip_gap_2": {
+				"Layer 1": { "x": 51.41, "y": 47.46, "width": 267, "height": 196 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"nhip_gap_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nhip_gap_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"nhip_gap_1": {
+				"rotate": [
+					{ "value": 11.41 },
+					{ "time": 0.1667, "value": -0.87 }
+				],
+				"scale": [
+					{ "x": 0.906, "y": 0.906 },
+					{ "time": 0.1667 }
+				]
+			},
+			"nhip_gap_4": {
+				"rotate": [
+					{ "value": -3.39 },
+					{ "time": 0.1667, "value": 2.63 }
+				]
+			}
+		}
+	},
+	"stop_1": {
+		"slots": {
+			"nhip_gap_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nhip_gap_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"nhip_gap_1": {
+				"rotate": [
+					{ "value": -0.87 }
+				]
+			},
+			"nhip_gap_4": {
+				"rotate": [
+					{ "value": 2.63 }
+				]
+			}
+		}
+	},
+	"stop_2": {
+		"slots": {
+			"nhip_gap_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nhip_gap_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"nhip_gap_1": {
+				"rotate": [
+					{ "value": 11.41 }
+				],
+				"scale": [
+					{ "x": 0.906, "y": 0.906 }
+				]
+			},
+			"nhip_gap_4": {
+				"rotate": [
+					{ "value": -3.39 }
+				]
+			}
+		}
+	}
+}
+}

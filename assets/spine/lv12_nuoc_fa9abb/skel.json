@@ -1,0 +1,169 @@
+{
+"skeleton": { "hash": "5QubUox+P3s", "spine": "4.1.24", "x": 11.69, "y": -37.63, "images": "./image/", "audio": "D:/w77_cleaning_ASMR/Spine_38/lv12_nuoc_ban/image" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "be_boi_1 copy", "parent": "root", "x": 38.45, "y": -755.87 },
+	{ "name": "be_boi_1 copy2", "parent": "be_boi_1 copy", "x": -4.26, "y": 127.27 }
+],
+"slots": [
+	{ "name": "be_boi_clip_end", "bone": "be_boi_1 copy", "attachment": "be_boi_clip" },
+	{ "name": "nuoc_ban", "bone": "be_boi_1 copy2", "color": "ffffff00", "attachment": "nuoc_ban" },
+	{ "name": "nuoc_sach", "bone": "be_boi_1 copy2", "color": "ffffff00", "attachment": "nuoc_sach" },
+	{ "name": "nuoc_ban_doc", "bone": "be_boi_1 copy2", "color": "ffffff00", "attachment": "nuoc_ban_doc" },
+	{ "name": "be_boi_clip", "bone": "be_boi_1 copy" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"be_boi_clip_end": {
+				"be_boi_clip": {
+					"type": "clipping",
+					"end": "be_boi_clip",
+					"vertexCount": 4,
+					"vertices": [ -733.7, 173.69, 688.4, 175.6, 667.35, 1457.98, -682.02, 1490.52 ],
+					"color": "ce3a3a00"
+				}
+			},
+			"nuoc_ban": {
+				"nuoc_ban": { "x": -22.5, "y": 590.97, "width": 1169, "height": 1089 }
+			},
+			"nuoc_ban_doc": {
+				"nuoc_ban_doc": { "x": -22.5, "y": 590.97, "width": 1169, "height": 1089 }
+			},
+			"nuoc_sach": {
+				"nuoc_sach": { "x": -22.5, "y": 590.97, "width": 1169, "height": 1089 }
+			}
+		}
+	}
+],
+"animations": {
+	"nuoc_ban_fill": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"be_boi_1 copy2": {
+				"translate": [
+					{ "y": -187.82 },
+					{ "time": 0.6667 }
+				]
+			}
+		}
+	},
+	"nuoc_ban_idle": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"nuoc_doc_change": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nuoc_ban_doc": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 1.3333, "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"nuoc_doc_idle": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nuoc_ban_doc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"nuoc_doc_out": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 3.3333, "color": "ffffffff" },
+					{ "time": 4, "color": "ffffff00" }
+				]
+			},
+			"nuoc_ban_doc": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 3.3333, "color": "ffffffff" },
+					{ "time": 4, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"be_boi_1 copy2": {
+				"translate": [
+					{},
+					{ "time": 4, "y": -124.8 }
+				],
+				"scale": [
+					{},
+					{ "time": 4, "x": 0.954, "y": 0.954 }
+				]
+			}
+		}
+	},
+	"nuoc_sach_fill": {
+		"slots": {
+			"nuoc_sach": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 0.6667, "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"be_boi_1 copy2": {
+				"translate": [
+					{ "y": -124.8 },
+					{ "time": 4 }
+				],
+				"scale": [
+					{ "x": 0.954, "y": 0.954 },
+					{ "time": 4 }
+				]
+			}
+		}
+	},
+	"nuoc_sach_idle": {
+		"slots": {
+			"nuoc_sach": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"be_boi_1 copy2": {
+				"translate": [
+					{ "y": -124.8 }
+				],
+				"scale": [
+					{ "x": 0.954, "y": 0.954 }
+				]
+			}
+		}
+	}
+}
+}

@@ -1,0 +1,146 @@
+{
+"skeleton": {
+	"hash": "51FEOZP/t08",
+	"spine": "4.1.24",
+	"x": -234.37,
+	"y": -108.73,
+	"width": 473,
+	"height": 444,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv25_nuoc_ban/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "cay_moc_cong_do", "parent": "root", "x": -10.45, "y": -171.75 },
+	{ "name": "cay_moc_cong_do2", "parent": "cay_moc_cong_do", "x": 16.79, "y": 483.55 },
+	{ "name": "nuoc_ban", "parent": "cay_moc_cong_do", "x": 8.64, "y": 152.73 }
+],
+"slots": [
+	{ "name": "nuoc_ban", "bone": "nuoc_ban", "color": "ffffff00", "attachment": "nuoc_ban" },
+	{ "name": "nut_lavabo", "bone": "cay_moc_cong_do", "color": "ffffff00", "attachment": "nut_lavabo" },
+	{ "name": "ban_clip_end", "bone": "cay_moc_cong_do", "color": "ffffff00", "attachment": "ban_clip" },
+	{ "name": "cay_moc_cong_do", "bone": "cay_moc_cong_do2", "color": "ffffff00", "attachment": "cay_moc_cong_do" },
+	{ "name": "cay_moc_cong_do_ban", "bone": "cay_moc_cong_do2", "color": "ffffff00", "attachment": "cay_moc_cong_do_ban" },
+	{ "name": "ban_clip", "bone": "cay_moc_cong_do", "color": "ffffff00" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"ban_clip_end": {
+				"ban_clip": {
+					"type": "clipping",
+					"end": "ban_clip",
+					"vertexCount": 13,
+					"vertices": [ -173.58, 842.58, -174.28, 159.71, -31.49, 122.85, -3.42, 112.31, 7.57, 107.31, 14.24, 106.54, 23.19, 106.16, 30.04, 107.68, 36.32, 110.54, 39.75, 114.53, 49.14, 123.21, 89.37, 128.51, 331.32, 813.07 ],
+					"color": "ce3a3a00"
+				}
+			},
+			"cay_moc_cong_do": {
+				"cay_moc_cong_do": { "x": 0.79, "y": -173.53, "width": 145, "height": 394 }
+			},
+			"cay_moc_cong_do_ban": {
+				"cay_moc_cong_do_ban": { "x": -2.21, "y": -223.53, "width": 57, "height": 302 }
+			},
+			"nuoc_ban": {
+				"nuoc_ban": { "x": 3.95, "y": -4.72, "width": 473, "height": 170 }
+			},
+			"nut_lavabo": {
+				"nut_lavabo": { "x": 17.08, "y": 117.52, "width": 48, "height": 25 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"ban_clip": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"ban_clip_end": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"cay_moc_cong_do": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "ffffffff" },
+					{ "time": 5.6667, "color": "ffffff00" }
+				]
+			},
+			"cay_moc_cong_do_ban": {
+				"rgba": [
+					{ "time": 1.3333, "color": "ffffff00" },
+					{ "time": 1.6667, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 5.3333, "color": "ffffffff" },
+					{ "time": 5.6667, "color": "ffffff00" }
+				]
+			},
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 4.6667, "color": "ffffffff" },
+					{ "time": 5, "color": "ffffff00" }
+				]
+			},
+			"nut_lavabo": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 4.6667, "color": "ffffffff" },
+					{ "time": 5, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"cay_moc_cong_do2": {
+				"rotate": [
+					{ "time": 5 },
+					{ "time": 5.6667, "value": -17.98 }
+				],
+				"translate": [
+					{},
+					{ "time": 0.6667, "y": -293.48 },
+					{ "time": 1, "y": -184.05 },
+					{ "time": 1.3333, "y": -293.48 },
+					{ "time": 1.6667, "y": -184.05 },
+					{ "time": 2, "y": -293.48 },
+					{ "time": 2.3333, "y": -184.05 },
+					{ "time": 2.6667, "y": -293.48 },
+					{ "time": 3.6667, "y": 47.13, "curve": "stepped" },
+					{ "time": 5, "y": 47.13 },
+					{ "time": 5.6667, "x": 129.04, "y": 169.61 }
+				]
+			},
+			"nuoc_ban": {
+				"translate": [
+					{},
+					{ "time": 3.6667, "x": -0.15, "y": 0.01, "curve": "stepped" },
+					{ "time": 4, "x": -0.15, "y": 0.01 },
+					{ "time": 5, "x": 12.97, "y": -37.17 }
+				],
+				"scale": [
+					{ "time": 4 },
+					{ "time": 5, "x": 0.326, "y": 0.326 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"nut_lavabo": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

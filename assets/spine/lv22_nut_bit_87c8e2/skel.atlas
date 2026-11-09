@@ -1,0 +1,12 @@
+lv22_nut_bit.webp
+size:700,76
+filter:Linear,Linear
+nut_bit_1
+bounds:2,3,71,69
+nut_bit_2
+bounds:75,2,50,51
+rotate:90
+nut_bit_3
+bounds:75,54,18,620
+rotate:90
+

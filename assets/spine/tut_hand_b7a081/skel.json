@@ -1,0 +1,64 @@
+{
+"skeleton": {
+	"hash": "WVgbNRu/xd0",
+	"spine": "4.1.24",
+	"x": -175.5,
+	"y": -165.17,
+	"width": 419.84,
+	"height": 244.17,
+	"images": "./image/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "tut_hand_1", "parent": "root", "x": 131.15, "y": -220.13 }
+],
+"slots": [
+	{ "name": "tut_hand_2", "bone": "root", "attachment": "tut_hand_2" },
+	{ "name": "tut_hand_1", "bone": "tut_hand_1", "attachment": "tut_hand_1" },
+	{ "name": "path_infi", "bone": "root", "attachment": "path_infi" }
+],
+"path": [
+	{
+		"name": "path_infi",
+		"bones": [ "tut_hand_1" ],
+		"target": "path_infi",
+		"mixRotate": 0
+	}
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"path_infi": {
+				"path_infi": {
+					"type": "path",
+					"closed": true,
+					"lengths": [ 151.49, 323.82, 445.37, 579.03, 743.57, 868.74 ],
+					"vertexCount": 18,
+					"vertices": [ 156.95, 46.27, 158.78, 10.01, 161.96, -53.17, 113.24, -79.01, 54.47, -49, 10.04, -26.31, -34.8, 48.27, -76.64, 61.59, -123.4, 76.46, -160.94, 31.83, -158.85, -4.39, -155.77, -57.74, -103.47, -77.47, -59.02, -51.53, -16.78, -26.88, 20.19, 37.32, 62.48, 58.67, 109.27, 82.3 ],
+					"color": "ff800000"
+				}
+			},
+			"tut_hand_1": {
+				"tut_hand_1": { "x": 16.06, "y": -81.67, "width": 139, "height": 187 }
+			},
+			"tut_hand_2": {
+				"tut_hand_2": { "width": 351, "height": 158 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"path": {
+			"path_infi": {
+				"position": [
+					{ "value": 1 },
+					{ "time": 2 }
+				]
+			}
+		}
+	}
+}
+}

@@ -1,0 +1,91 @@
+{
+"skeleton": {
+	"hash": "PtkWfFBtdwY",
+	"spine": "4.1.24",
+	"x": -15,
+	"y": -168.5,
+	"width": 185,
+	"height": 185,
+	"images": "./image/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "tut_hand", "parent": "root", "x": 90.5, "y": -80 }
+],
+"slots": [
+	{ "name": "tut_hand", "bone": "tut_hand", "color": "ffffff00", "attachment": "tut_hand" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"tut_hand": {
+				"tut_hand": { "x": -13, "y": 4, "width": 185, "height": 185 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"tut_hand": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 2, "color": "ffffffff" },
+					{ "time": 2.3333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"tut_hand": {
+				"translate": [
+					{},
+					{ "time": 2.3333, "x": 466.5, "y": -660.56 }
+				]
+			}
+		}
+	},
+	"slide_down": {
+		"slots": {
+			"tut_hand": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.2667, "color": "ffffffff" },
+					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"tut_hand": {
+				"translate": [
+					{},
+					{ "time": 1.3333, "y": -538.93 }
+				],
+				"scale": [
+					{ "x": 0.695, "y": 0.695 }
+				]
+			}
+		}
+	},
+	"slide_to_point": {
+		"slots": {
+			"tut_hand": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.9, "color": "ffffffff" },
+					{ "time": 0.9667, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"tut_hand": {
+				"translate": [
+					{ "y": -494.94 },
+					{ "time": 0.9667 }
+				]
+			}
+		}
+	}
+}
+}

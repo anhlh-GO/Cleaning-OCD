@@ -1,0 +1,60 @@
+{
+"skeleton": {
+	"hash": "pCxsPpweLvo",
+	"spine": "4.1.24",
+	"x": -512.74,
+	"y": -533.13,
+	"width": 1021,
+	"height": 1501,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv8_phong_ngu/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "bg", "parent": "root", "x": -2.4, "y": -28.73 }
+],
+"slots": [
+	{ "name": "hop", "bone": "bg", "color": "ffffff00", "attachment": "hop" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"hop": {
+				"hop": { "x": 0.16, "y": 246.1, "width": 1021, "height": 1501 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"hop": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 0.3333, "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"bg": {
+				"rotate": [
+					{ "value": -33.87 },
+					{ "time": 0.8333, "value": -29.14 },
+					{ "time": 1.6667 }
+				],
+				"translate": [
+					{ "x": 856.62, "y": 781.16 },
+					{ "time": 0.8333, "x": 35.83, "y": 598.94 },
+					{ "time": 1.6667 }
+				],
+				"scale": [
+					{ "x": 0.335, "y": 0.335 },
+					{ "time": 0.8333, "x": 0.535, "y": 0.535 },
+					{ "time": 1.6667 }
+				]
+			}
+		}
+	}
+}
+}

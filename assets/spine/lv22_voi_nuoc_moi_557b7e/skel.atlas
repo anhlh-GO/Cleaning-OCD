@@ -1,0 +1,12 @@
+lv22_voi_nuoc_moi.webp
+size:600,368
+filter:Linear,Linear
+cold
+bounds:472,94,134,125
+rotate:90
+hot
+bounds:472,230,136,125
+rotate:90
+voi_nuoc
+bounds:2,2,468,364
+

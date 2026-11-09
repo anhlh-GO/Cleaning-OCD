@@ -1,0 +1,193 @@
+{
+"skeleton": {
+	"hash": "CJYwgr85INc",
+	"spine": "4.1.24",
+	"x": -302.7,
+	"y": -201.89,
+	"width": 647,
+	"height": 406,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv23_va_toan_bo/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "1", "parent": "root", "x": -12.83, "y": -249.1 },
+	{ "name": "3", "parent": "1", "x": -95.15, "y": 190.77 },
+	{ "name": "4", "parent": "1", "x": 287.64, "y": 86.37 },
+	{ "name": "5", "parent": "1", "x": 271.26, "y": 266.51 },
+	{ "name": "6", "parent": "1", "x": 42, "y": 405.7 },
+	{ "name": "7", "parent": "1", "x": -250.72, "y": 379.09 }
+],
+"slots": [
+	{ "name": "va_toan_bo_3", "bone": "1", "color": "ffffff00", "attachment": "va_toan_bo_3" },
+	{ "name": "5", "bone": "7", "color": "ffffff00", "attachment": "5" },
+	{ "name": "4", "bone": "6", "color": "ffffff00", "attachment": "4" },
+	{ "name": "3", "bone": "5", "color": "ffffff00", "attachment": "3" },
+	{ "name": "2", "bone": "4", "color": "ffffff00", "attachment": "2" },
+	{ "name": "1", "bone": "3", "color": "ffffff00", "attachment": "1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"1": {
+				"1": { "x": -1.71, "y": -2.05, "width": 52, "height": 47 }
+			},
+			"2": {
+				"2": { "x": -1.5, "y": -3.16, "width": 96, "height": 46 }
+			},
+			"3": {
+				"3": { "x": 3.38, "y": 3.21, "width": 129, "height": 31 }
+			},
+			"4": {
+				"4": { "x": 2.14, "y": -3.99, "width": 42, "height": 85 }
+			},
+			"5": {
+				"5": { "x": -1.14, "y": -5.38, "width": 62, "height": 53 }
+			},
+			"va_toan_bo_3": {
+				"va_toan_bo_3": { "x": 33.64, "y": 250.22, "width": 647, "height": 406 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"1": {
+				"rgba": [
+					{ "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			},
+			"2": {
+				"rgba": [
+					{ "time": 0.1667, "color": "ffffff00" },
+					{ "time": 0.3333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			},
+			"3": {
+				"rgba": [
+					{ "time": 0.3333, "color": "ffffff00" },
+					{ "time": 0.5, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			},
+			"4": {
+				"rgba": [
+					{ "time": 0.5, "color": "ffffff00" },
+					{ "time": 0.6667, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			},
+			"5": {
+				"rgba": [
+					{ "time": 0.6667, "color": "ffffff00" },
+					{ "time": 0.8333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			},
+			"va_toan_bo_3": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2.1667, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"7": {
+				"rotate": [
+					{ "time": 0.6667, "value": 174.14 },
+					{ "time": 1.3333 }
+				],
+				"translate": [
+					{ "time": 0.6667, "x": -55.46, "y": -369.72 },
+					{ "time": 1.3333 }
+				],
+				"scale": [
+					{ "time": 1.3333 },
+					{ "time": 1.4, "x": 1.2, "y": 1.2 },
+					{ "time": 1.5 }
+				]
+			},
+			"6": {
+				"rotate": [
+					{ "time": 0.5, "value": -94.69 },
+					{ "time": 1.1667 }
+				],
+				"translate": [
+					{ "time": 0.5, "x": 78.05, "y": -277.29 },
+					{ "time": 1.1667 }
+				],
+				"scale": [
+					{ "time": 1.1667 },
+					{ "time": 1.2333, "x": 1.2, "y": 1.2 },
+					{ "time": 1.3333 }
+				]
+			},
+			"5": {
+				"rotate": [
+					{ "time": 0.3333, "value": 74.71 },
+					{ "time": 1 }
+				],
+				"translate": [
+					{ "time": 0.3333, "x": 213.62, "y": -258.8 },
+					{ "time": 1 }
+				],
+				"scale": [
+					{ "time": 1 },
+					{ "time": 1.0667, "x": 1.2, "y": 1.2 },
+					{ "time": 1.1667 }
+				]
+			},
+			"4": {
+				"rotate": [
+					{ "time": 0.1667, "value": -177.08 },
+					{ "time": 0.8333 }
+				],
+				"translate": [
+					{ "time": 0.1667, "x": 41.08, "y": -195.13 },
+					{ "time": 0.8333 }
+				],
+				"scale": [
+					{ "time": 0.8333 },
+					{ "time": 0.9, "x": 1.2, "y": 1.2 },
+					{ "time": 1 }
+				]
+			},
+			"3": {
+				"rotate": [
+					{ "value": -87.86 },
+					{ "time": 0.6667 }
+				],
+				"translate": [
+					{ "x": 20.54, "y": -273.18 },
+					{ "time": 0.6667 }
+				],
+				"scale": [
+					{ "time": 0.6667 },
+					{ "time": 0.7333, "x": 1.2, "y": 1.2 },
+					{ "time": 0.8333 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"va_toan_bo_3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

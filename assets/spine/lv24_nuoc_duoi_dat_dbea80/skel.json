@@ -1,0 +1,60 @@
+{
+"skeleton": {
+	"hash": "rJ5q9RWyu8o",
+	"spine": "4.1.24",
+	"x": -550.48,
+	"y": -283.21,
+	"width": 1054,
+	"height": 511,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv24_nuoc_duoi_dat/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "3 copy", "parent": "root", "x": -40.86, "y": -476.49 },
+	{ "name": "nuoc", "parent": "3 copy", "x": 20.31, "y": 472.16 }
+],
+"slots": [
+	{ "name": "nuoc", "bone": "nuoc", "color": "ffffff00", "attachment": "nuoc" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"nuoc": {
+				"nuoc": { "x": -2.94, "y": -23.38, "width": 1054, "height": 511 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"nuoc": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 3.3333, "color": "ffffffff" },
+					{ "time": 4.9667, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"nuoc": {
+				"scale": [
+					{},
+					{ "time": 4.9667, "x": 0.5, "y": 0.5 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"nuoc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

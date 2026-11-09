@@ -1,0 +1,92 @@
+{
+"skeleton": {
+	"hash": "e1cfp0oG8dY",
+	"spine": "4.1.24",
+	"x": -466.86,
+	"y": -395.1,
+	"width": 928,
+	"height": 818.49,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv18_rem_moi/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "rem_moi_1", "parent": "root", "x": 6.11, "y": -507.82 },
+	{ "name": "rem_moi_3", "parent": "rem_moi_1", "x": -2.51, "y": 185.74 }
+],
+"slots": [
+	{ "name": "rem_end", "bone": "rem_moi_1", "attachment": "rem" },
+	{ "name": "rem_moi_1", "bone": "rem_moi_3", "color": "ffffff00", "attachment": "rem_moi_1" },
+	{ "name": "rem", "bone": "rem_moi_1" },
+	{ "name": "rem_moi_2", "bone": "rem_moi_1", "color": "ffffff00", "attachment": "rem_moi_2" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"rem_end": {
+				"rem": {
+					"type": "clipping",
+					"end": "rem",
+					"vertexCount": 4,
+					"vertices": [ -527.1, 931.21, 524.59, 931.21, 512.04, 47.69, -542.16, 57.73 ],
+					"color": "ce3a3a00"
+				}
+			},
+			"rem_moi_1": {
+				"rem_moi_1": { "x": -6.46, "y": 362.98, "width": 928, "height": 872 }
+			},
+			"rem_moi_2": {
+				"rem_moi_2": { "x": -8.97, "y": 940.22, "width": 928, "height": 89 }
+			}
+		}
+	}
+],
+"animations": {
+	"keo": {
+		"slots": {
+			"rem_moi_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"rem_moi_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"rem_moi_3": {
+				"translate": [
+					{ "y": 811.59 },
+					{ "time": 1.3333 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"rem_moi_1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"rem_moi_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"stop_1": {
+		"slots": {
+			"rem_moi_2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

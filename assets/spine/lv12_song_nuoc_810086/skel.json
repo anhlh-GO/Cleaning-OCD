@@ -1,0 +1,53 @@
+{
+"skeleton": {
+	"hash": "8U9z0yR/XZA",
+	"spine": "4.1.24",
+	"x": -227.61,
+	"y": -120.42,
+	"width": 482,
+	"height": 283,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv12_song_nuoc/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "ripple", "parent": "root", "x": 5.58, "y": 8.08 }
+],
+"slots": [
+	{ "name": "ripple", "bone": "ripple", "color": "ffffff00", "attachment": "ripple" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"ripple": {
+				"ripple": { "x": 7.81, "y": 13, "width": 482, "height": 283 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"ripple": {
+				"rgba": [
+					{ "color": "ffffffff" },
+					{ "time": 1, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"ripple": {
+				"scale": [
+					{
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.033, 0.392, 0.75, 1, 0.033, 0.392, 0.75, 1 ]
+					},
+					{ "time": 1 }
+				]
+			}
+		}
+	}
+}
+}

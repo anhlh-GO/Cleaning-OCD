@@ -1,0 +1,124 @@
+{
+"skeleton": {
+	"hash": "mYN9ppvJLDw",
+	"spine": "4.1.24",
+	"x": -224.12,
+	"y": -63.68,
+	"width": 468,
+	"height": 364,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv22_voi_nuoc_moi/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "cold", "parent": "root", "x": 1.07, "y": -104.73 },
+	{ "name": "hot", "parent": "cold", "x": -160.64, "y": 110.68 },
+	{ "name": "cold3", "parent": "cold", "x": 166.91, "y": 110.52 }
+],
+"slots": [
+	{ "name": "voi_nuoc", "bone": "cold", "color": "ffffff00", "attachment": "voi_nuoc" },
+	{ "name": "cold", "bone": "cold3", "color": "ffffff00", "attachment": "cold" },
+	{ "name": "hot", "bone": "hot", "color": "ffffff00", "attachment": "hot" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"cold": {
+				"cold": { "x": 0.91, "y": -0.97, "width": 134, "height": 125 }
+			},
+			"hot": {
+				"hot": { "x": 3.45, "y": -1.12, "width": 136, "height": 125 }
+			},
+			"voi_nuoc": {
+				"voi_nuoc": { "x": 8.81, "y": 223.06, "width": 468, "height": 364 }
+			}
+		}
+	}
+],
+"animations": {
+	"stop": {
+		"slots": {
+			"cold": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"hot": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"voi_nuoc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	},
+	"van_phai": {
+		"slots": {
+			"cold": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"hot": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"voi_nuoc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"cold3": {
+				"rotate": [
+					{},
+					{ "time": 0.3333, "value": -120 },
+					{ "time": 0.6667, "value": -240 },
+					{ "time": 1, "value": -360 },
+					{ "time": 1.3333, "value": -480 },
+					{ "time": 1.6667, "value": -600 },
+					{ "time": 2, "value": -720 }
+				]
+			}
+		}
+	},
+	"van_trai": {
+		"slots": {
+			"cold": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"hot": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"voi_nuoc": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"hot": {
+				"rotate": [
+					{},
+					{ "time": 0.3333, "value": -120 },
+					{ "time": 0.6667, "value": -240 },
+					{ "time": 1, "value": -360 },
+					{ "time": 1.3333, "value": -480 },
+					{ "time": 1.6667, "value": -600 },
+					{ "time": 2, "value": -720 }
+				]
+			}
+		}
+	}
+}
+}

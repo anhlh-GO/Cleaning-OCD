@@ -1,0 +1,42 @@
+{
+"skeleton": {
+	"hash": "1S4Wu4k7Ogc",
+	"spine": "4.1.24",
+	"x": -106.29,
+	"y": -66.57,
+	"width": 213,
+	"height": 226,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv8_hop_qua/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "Layer 51", "parent": "root", "x": 7.51, "y": 27.64 }
+],
+"slots": [
+	{ "name": "Layer 51", "bone": "Layer 51", "attachment": "Layer 51" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Layer 51": {
+				"Layer 51": { "x": -7.29, "y": 18.79, "width": 213, "height": 226 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"bones": {
+			"Layer 51": {
+				"rotate": [
+					{ "value": 23.19 },
+					{ "time": 0.6667, "value": -31.63 },
+					{ "time": 1.3333, "value": 23.19 }
+				]
+			}
+		}
+	}
+}
+}

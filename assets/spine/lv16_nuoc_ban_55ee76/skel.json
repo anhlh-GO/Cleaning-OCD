@@ -1,0 +1,65 @@
+{
+"skeleton": {
+	"hash": "6wGQ5c+vZ6E",
+	"spine": "4.1.24",
+	"x": -397.67,
+	"y": -180.8,
+	"width": 809,
+	"height": 404,
+	"images": "./image/",
+	"audio": "D:/w77_cleaning_ASMR/Spine_38/lv16_nuoc_ban/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "nuoc_ban", "parent": "root", "x": 5.31, "y": -68.33 }
+],
+"slots": [
+	{ "name": "nuoc_ban", "bone": "nuoc_ban", "color": "ffffff00", "attachment": "nuoc_ban" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"nuoc_ban": {
+				"nuoc_ban": { "x": 1.52, "y": 89.53, "width": 809, "height": 404 }
+			}
+		}
+	}
+],
+"animations": {
+	"nuoc_rut": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff", "curve": "stepped" },
+					{ "time": 0.3333, "color": "ffffffff" },
+					{ "time": 1.3333, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"nuoc_ban": {
+				"translate": [
+					{},
+					{ "time": 0.3333, "y": -27.58 },
+					{ "time": 1.3333, "y": -32.44 }
+				],
+				"scale": [
+					{},
+					{ "time": 0.3333, "x": 0.73, "y": 0.73 },
+					{ "time": 1.3333, "x": 0.28, "y": 0.28 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"nuoc_ban": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}

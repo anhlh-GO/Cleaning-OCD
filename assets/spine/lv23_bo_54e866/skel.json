@@ -1,0 +1,195 @@
+{
+"skeleton": {
+	"hash": "NwPJdI54b54",
+	"spine": "4.1.24",
+	"x": -40.21,
+	"y": -5.53,
+	"width": 84,
+	"height": 45,
+	"images": "./image/",
+	"audio": "E:/w77_cleaning_ASMR/Spine_38/lv23_bo/image"
+},
+"bones": [
+	{ "name": "root" },
+	{ "name": "1", "parent": "root", "x": -12.63, "y": -17.11 },
+	{ "name": "5", "parent": "1", "length": 5.79, "rotation": -104.3, "x": -1.32, "y": 31.01 },
+	{ "name": "3", "parent": "1", "length": 8.98, "rotation": -120.96, "x": 1.43, "y": 29.58 },
+	{ "name": "4", "parent": "1", "length": 8.52, "rotation": -35.54, "x": 14.41, "y": 26.61 },
+	{ "name": "6", "parent": "1", "length": 9.64, "rotation": -34.78, "x": 31.35, "y": 28.59 },
+	{ "name": "7", "parent": "1", "length": 8.36, "rotation": -125.36, "x": -13.75, "y": 31.34 },
+	{ "name": "8", "parent": "1", "x": 10.34, "y": 36.95 }
+],
+"slots": [
+	{ "name": "6", "bone": "8", "color": "ffffff00", "attachment": "6" },
+	{ "name": "5", "bone": "5", "color": "ffffff00", "attachment": "5" },
+	{ "name": "4", "bone": "7", "color": "ffffff00", "attachment": "4" },
+	{ "name": "3", "bone": "3", "color": "ffffff00", "attachment": "3" },
+	{ "name": "2", "bone": "6", "color": "ffffff00", "attachment": "2" },
+	{ "name": "1", "bone": "4", "color": "ffffff00", "attachment": "1" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"1": {
+				"1": { "x": 12.76, "y": 1.08, "rotation": 35.54, "width": 24, "height": 17 }
+			},
+			"2": {
+				"2": { "x": 12.65, "y": 2.07, "rotation": 34.78, "width": 27, "height": 15 }
+			},
+			"3": {
+				"3": { "x": 11.42, "y": -2.49, "rotation": 120.96, "width": 22, "height": 19 }
+			},
+			"4": {
+				"4": { "x": 8.49, "y": -1.13, "rotation": 125.36, "width": 16, "height": 17 }
+			},
+			"5": {
+				"5": { "x": 4, "y": 2.3, "rotation": 104.3, "width": 9, "height": 12 }
+			},
+			"6": {
+				"6": { "x": -5.42, "y": 2.12, "width": 65, "height": 35 }
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"4": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"5": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"6": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		},
+		"bones": {
+			"8": {
+				"translate": [
+					{},
+					{ "time": 0.3333, "y": -1.98 },
+					{ "time": 0.6667 }
+				]
+			},
+			"5": {
+				"rotate": [
+					{ "value": -52.87 },
+					{ "time": 0.1667, "value": 13.34 },
+					{ "time": 0.3333, "value": -52.87 },
+					{ "time": 0.5, "value": 13.34 },
+					{ "time": 0.6667 }
+				]
+			},
+			"3": {
+				"rotate": [
+					{ "value": 40.83 },
+					{ "time": 0.0667, "value": 78.45 },
+					{ "time": 0.2333, "value": -15.61 },
+					{ "time": 0.4, "value": 78.45 },
+					{ "time": 0.5667, "value": -15.61 },
+					{ "time": 0.6667, "value": 40.83 }
+				],
+				"translate": [
+					{ "x": -2.89, "y": 1.99 }
+				]
+			},
+			"4": {
+				"rotate": [
+					{ "value": -88.12 },
+					{ "time": 0.0333, "value": -111.02 },
+					{ "time": 0.2, "value": 3.48 },
+					{ "time": 0.3667, "value": -111.02 },
+					{ "time": 0.5333, "value": 3.48 },
+					{ "time": 0.6667, "value": -88.12 }
+				],
+				"translate": [
+					{ "x": -0.74, "y": 1.1 }
+				]
+			},
+			"6": {
+				"rotate": [
+					{ "value": 5.71 },
+					{ "time": 0.1667, "value": -105.82 },
+					{ "time": 0.3333, "value": 5.71 },
+					{ "time": 0.5, "value": -105.82 },
+					{ "time": 0.6667, "value": 5.71 }
+				],
+				"translate": [
+					{ "x": -2.45, "y": 2.21 },
+					{ "time": 0.1667, "x": -2.45, "y": 8.52 },
+					{ "time": 0.3333, "x": -2.45, "y": 2.21 },
+					{ "time": 0.5, "x": -2.45, "y": 8.52 },
+					{ "time": 0.6667, "x": -2.45, "y": 2.21 }
+				]
+			},
+			"7": {
+				"rotate": [
+					{ "value": 40.34 },
+					{ "time": 0.1 },
+					{ "time": 0.2667, "value": 67.23 },
+					{ "time": 0.4333 },
+					{ "time": 0.6, "value": 67.23 },
+					{ "time": 0.6667, "value": 40.34 }
+				]
+			}
+		}
+	},
+	"stop": {
+		"slots": {
+			"1": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"2": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"3": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"4": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"5": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			},
+			"6": {
+				"rgba": [
+					{ "color": "ffffffff" }
+				]
+			}
+		}
+	}
+}
+}
