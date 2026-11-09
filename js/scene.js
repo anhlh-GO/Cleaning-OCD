@@ -54,7 +54,9 @@ class Scene {
     let a, b, c, d;
     if (n.rz != null) { const r = n.rz * Math.PI / 180; a = Math.cos(r); b = Math.sin(r); c = -b; d = a; }
     else[a, b, c, d] = n.m0;
-    return [a * n.sx, b * n.sx, c * n.sy, d * n.sy, n.px, n.py];
+    if (n.tilt) { const r = n.tilt * Math.PI / 180, cs = Math.cos(r), sn = Math.sin(r); [a, b, c, d] = [cs * a - sn * b, sn * a + cs * b, cs * c - sn * d, sn * c + cs * d]; }
+    const pu = n.punch || 1;
+    return [a * n.sx * pu, b * n.sx * pu, c * n.sy * pu, d * n.sy * pu, n.px, n.py];
   }
   updateWorld() {
     const rec = (id, pm, pa) => {
@@ -171,7 +173,9 @@ class Scene {
       let cx = ctx;
       if (sg) { cx = { items: [], masks: [], parent: ctx, sg }; ctx.items.push({ l: sg.l, o: sg.o, i: idx++, g: cx }); }
       for (const cid of n.comps) {
-        const c = this.comps[cid]; if (!c || !c.en) continue;
+        const c = this.comps[cid]; if (!c) continue;
+        if (c.k === 'PS') { if (c.sys && c.sys.parts.length && c.ps.r && c.ps.r.en) cx.items.push({ l: c.ps.r.l, o: c.ps.r.o, i: idx++, ps: c, ctx: cx }); continue; }
+        if (!c.en) continue;
         if (c.k === 'SR' && c.sp && c.alpha > 0.001) cx.items.push({ l: c.l, o: c.o, i: idx++, r: c, ctx: cx });
         else if (c.k === 'SPINE' && c.inst) {
           const mr = n.comps.map(x => this.comps[x]).find(x => x && x.k === 'MR');
@@ -251,6 +255,7 @@ const R = {
     const list = sc.buildList();
     for (const it of list) {
       if (it.cu) { ctx.save(); this.setT(ctx, this.viewM()); it.cu.draw(ctx); ctx.restore(); continue; }
+      if (it.ps) { ctx.save(); this.setT(ctx, this.viewM()); it.ps.sys.draw(ctx); ctx.restore(); continue; }
       const sr = it.r;
       const dr = sr ? sc.drawers.get(sr.id) : null;
       const mi = sr ? sr.mi : 0;

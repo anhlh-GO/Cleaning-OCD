@@ -16,6 +16,7 @@ class Tool {
   constructor(mb) {
     this.ok = !!mb;
     if (!mb) return;
+    Tool.all.push(this); this.tiltT = 0; this.held = false; this.hap = 0;
     const d = mb.d;
     this.go = S.goOf(d.toolTrans) || mb.go;
     this.tuts = (d.tuts || []).map(r => S.goOf(r)).filter(Boolean);
@@ -58,8 +59,24 @@ class Tool {
     const a = S.wpos(this.go), b = this.home;
     await tween(0.25, k => S.setWpos(this.go, lerp(a[0], b[0], k), lerp(a[1], b[1], k)), E.outQuad, this);
   }
-  onDown() { if (!this.ok) return; killTweens(this); for (const t of this.tuts) S.setActive(t, false); }
-  onDrag(delta) { if (!this.ok) return; const p = S.wpos(this.go); S.setWpos(this.go, p[0] + delta[0], p[1] + delta[1]); }
+  onDown() {
+    if (!this.ok) return; killTweens(this); for (const t of this.tuts) S.setActive(t, false);
+    this.held = true; const n = S.node(this.go);
+    tween(0.18, k => n.punch = 1 + 0.12 * Math.sin(k * Math.PI), E.outQuad).then(() => n.punch = 1);
+    vibrate(12);
+  }
+  onDrag(delta) {
+    if (!this.ok) return; const p = S.wpos(this.go); S.setWpos(this.go, p[0] + delta[0], p[1] + delta[1]);
+    this.tiltT = clamp(-delta[0] / Math.max(G.dt, 0.008) * 1.6, -14, 14);
+    this.hap += G.dt; if (this.hap > 0.09) { this.hap = 0; vibrate(6); }
+  }
+  onUp() { this.held = false; this.tiltT = 0; }
+  tick(dt) {
+    if (!this.ok) return; const n = S.node(this.go); if (!n) return;
+    const cur = n.tilt || 0; const tgt = this.held ? this.tiltT : 0;
+    n.tilt = cur + (tgt - cur) * Math.min(1, dt * 12); this.tiltT *= Math.max(0, 1 - dt * 6);
+    if (this.held && Input.down) { const w = Math.sin(G.time * 38) * 0.012; n.punch = (n.punch || 1) * 0 + 1 + w; } else if (!this.held && n.punch && Math.abs(n.punch - 1) < 0.05) n.punch = 1;
+  }
   pos() { return this.ok ? S.wpos(this.go) : Input.pos; }
 }
 
@@ -68,7 +85,7 @@ class SAC {
   constructor(go) {
     this.mb = S.mbOf(go, 'StepAnimationController');
     this.d = this.mb ? this.mb.d : {};
-    this.loops = [];
+    this.loops = []; this.ps = new Set();
     this.init();
   }
   phases() {
@@ -88,7 +105,7 @@ class SAC {
   start() { return this.d.useStartAnimation ? this.play(this.d.startPhase) : Promise.resolve(); }
   end() { return this.d.useEndAnimation ? this.play(this.d.endPhase) : Promise.resolve(); }
   pick() { if (this.d.usePickToolAnimation) this.play(this.d.pickToolPhase); }
-  stop() { for (const l of this.loops) l.stop = true; this.loops = []; }
+  stop() { for (const l of this.loops) l.stop = true; this.loops = []; for (const p of this.ps) p.stop(); this.ps.clear(); }
   interact(id) {
     if (!this.d.useInteractionPhases) return Promise.resolve();
     const ph = (this.d.interactionPhases || []).find(p => p.phaseId === id);
@@ -104,6 +121,7 @@ function initAnim(a) {
     case 5: { const r = srOfRef(a.blinkRender); if (r) r.alpha = 0; break; }
     case 11: { const t = S.goOf(a.targetObj), s = S.goOf(a.switchObj); if (t) S.setActive(t, true); if (s) S.setActive(s, false); break; }
     case 12: { const r = srOfRef(a.fadeRender); if (r) r.alpha = 0; break; }
+    case 300: { const ps = psOfRef(a.particleSystem); if (ps && ps.sys) { ps.sys.stop(); ps.sys.clear(); ps.autoPlay = false; } break; }
     case 100: {
       const sp = spineOfRef(a.skeletonAnimation); if (!sp) break;
       sp.pending = inst => { if (a.useInitAnimation) { inst.setSkin(a.initSkin); inst.play(a.initAnimName, a.loopInitAnim); } else { inst.setSkin(a.animSkin); inst.freeze(a.animName); } };
@@ -175,6 +193,7 @@ async function playAnim(a, sac) {
       if (!a.loopAnim) await pr; break;
     }
     case 200: { const g = S.goOf(a.obj); if (g) S.setActive(g, !!a.isActive); break; }
+    case 300: { const ps = psOfRef(a.particleSystem); if (ps && ps.sys) { S.setActive(ps.go, true); ps.sys.play(true); sac.ps.add(ps.sys); } break; }
   }
 }
 
@@ -319,7 +338,7 @@ class MaskStep extends Step {
     if (pc >= 0.8) this.finished = true;
     if (Math.random() < 0.08) vibrate(8);
   }
-  up() { this.lastFinger = null; this.dr && this.dr.end(); Audio2.stopLoop(); this.sac.stop(); if (!this.finished) this.tl.moveBack(); }
+  up() { this.lastFinger = null; this.dr && this.dr.end(); Audio2.stopLoop(); stopParticlesUnder(this.go); this.sac.stop(); if (!this.finished) this.tl.moveBack(); }
   async complete() { this.progress(1); if (this.dr) await this.dr.finish(); if (this.tl) await this.tl.moveOut(); }
 }
 
@@ -926,3 +945,5 @@ const HINT = {
     ctx.restore();
   },
 };
+
+Tool.all = [];

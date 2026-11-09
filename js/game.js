@@ -8,7 +8,7 @@ const Game = {
 function camBoundsOfSR(sr) { return S.spriteBounds(sr); }
 
 async function loadLevel(levelId) {
-  G.gen++; G.tweens = []; G.frameWaiters = [];
+  G.gen++; G.tweens = []; G.frameWaiters = []; Tool.all = []; Juice.bits = [];
   Input.handler = null; Input.enabled = false; Input.down = false;
   Audio2.stopLoop();
   Game.running = false; Game.levelId = levelId;
@@ -17,6 +17,8 @@ async function loadLevel(levelId) {
   const data = await getJSON(A + 'levels/' + levelId + '.json');
   if (myGen !== G.gen) return;
   S = new Scene(data);
+  initParticles(S);
+  const fxs = Object.values(S.comps).filter(c => c.k === 'PS' && c.ps && c.ps.r && c.ps.r.tex).map(c => loadFxTex(c.ps.r.tex.f));
   // preload sprites
   const sps = new Set();
   for (const c of Object.values(S.comps)) if ((c.k === 'SR' || c.k === 'SM') && c.sp) sps.add(c.sp);
@@ -28,6 +30,7 @@ async function loadLevel(levelId) {
     const sd = await loadSpineData(c.skel);
     if (sd) { try { c.inst = new SpineInst(sd, c); } catch (e) { console.warn(e); c.failed = true; } } else c.failed = true;
   }));
+  await Promise.all(fxs);
   if (myGen !== G.gen) return;
   setupLevel();
   // spine pending init (from step/anim init)
@@ -117,6 +120,8 @@ async function runLevel(gen) {
     if (!alive()) return;
     Audio2.play('step_completed', 0.6);
     UI.stepDone(Game.stepNo);
+    Juice.burst(); vibrate(35);
+    if (pl.stepGo) stopParticlesUnder(pl.stepGo);
     pl.isFinish = true;
     const next = getPl(cur + 1);
     let switched = false;
@@ -157,7 +162,7 @@ async function vpAnim(a) {
       break;
     }
     case 2: await camTo(Game.origin.x, Game.origin.y, Game.origin.size, a.zoomDuration || 0.4); break;
-    case 3: await fadeTo(1, a.zoomDuration || 0.5); break;
+    case 3: Game.fade.a = 1; await fadeTo(0, a.zoomDuration || 0.5); break; // scene fades in from black
     case 4: await fadeTo(0, a.zoomDuration || 0.5); break;
     case 5: {
       await fadeTo(1, a.zoomDuration || 0.5);
@@ -178,8 +183,9 @@ function onLevelComplete() {
   if (!done.includes(Game.idx)) { done.push(Game.idx); try { localStorage.setItem('cl_done', JSON.stringify(done)); } catch (e) { } }
   try { localStorage.setItem('cl_cur', String(Math.min(Game.idx + 1, Game.order.length - 1))); } catch (e) { }
   Audio2.play('level_win', 0.8);
-  vibrate(60);
-  setTimeout(() => UI.showWin(), 600);
+  vibrate([60, 40, 60]);
+  Juice.confetti();
+  setTimeout(() => UI.showWin(), 900);
 }
 
 // ---------- main loop ----------
@@ -200,9 +206,12 @@ function stepFrame(t) {
     if (h && Input.enabled && Input.down && h.hold) h.hold(Input.pos);
     for (const p of Game.placements || []) if (p.inst && p.inst.tick && S.activeIH(p.inst.go)) p.inst.tick(dt);
     S.updateWorld();
+    tickParticles(S, dt);
+    for (const t of Tool.all) t.tick(dt);
     for (const c of Object.values(S.comps)) if (c.k === 'SPINE' && c.inst && S.node(c.go).ah) c.inst.update(dt);
     R.render(S, Game.fade);
     FX.draw(dt);
+    Juice.draw(R.ctx, R.W, R.H, dt);
     if (Input.down || !Input.enabled) Game.idle = 0; else Game.idle = (Game.idle || 0) + dt;
     if (Input.enabled && Input.handler) { const c = R.ctx; R.setT(c, R.viewM()); HINT.draw(c, Input.handler, Game.idle); c.setTransform(1, 0, 0, 1, 0, 0); }
   }
@@ -230,7 +239,8 @@ function setupInput(cv) {
   const up = e => {
     if (!Input.down || e.pointerId !== Input.pid) return;
     Input.down = false; const p = pos(e);
-    if (Input.enabled && Input.handler) Input.handler.up(p);
+    const h = Input.handler; if (h && h.tl && h.tl.onUp) h.tl.onUp();
+    if (Input.enabled && h) h.up(p);
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
 }
