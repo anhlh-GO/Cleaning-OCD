@@ -66,6 +66,7 @@ function nodeQuat(sc, go) {
     let lq;
     if (m.rz != null) { const h = m.rz * Math.PI / 360; lq = [0, 0, Math.sin(h), Math.cos(h)]; }
     else { const t = sc.gos[m.id] && sc.gos[m.id].t; lq = t ? [t[3], t[4], t[5], t[6]] : [0, 0, 0, 1]; }
+    if (m.tilt) { const h = m.tilt * Math.PI / 360; lq = Q.mul([0, 0, Math.sin(h), Math.cos(h)], lq); }
     if (m.sx < 0 || m.sy < 0) { /* mirrored: approximate */ }
     q = Q.mul(q, lq);
   }
@@ -224,8 +225,8 @@ function initParticles(sc) {
   for (const c of all) if (c.ps.awake) c.autoPlay = true;
 }
 function tickParticles(sc, dt) {
-  for (const c of Object.values(sc.comps)) {
-    if (c.k !== 'PS' || !c.sys) continue;
+  if (!sc.psList) sc.psList = Object.values(sc.comps).filter(c => c.k === 'PS' && c.sys);
+  for (const c of sc.psList) {
     if (c.autoPlay && !c.sys.playing && sc.activeIH(c.go) && !c.autoDone) { c.sys.play(false); if (!c.ps.loop) c.autoDone = true; }
     c.sys.update(dt);
   }
@@ -259,5 +260,35 @@ const Juice = {
     }
     ctx.globalAlpha = 1;
     this.bits = this.bits.filter(b => b.t < b.life);
+  },
+};
+
+// Shine sweep over a freshly cleaned object
+const Shine = {
+  play(sr) {
+    const s = G.sprites[sr.sp], im = spriteImg.get(sr.sp); if (!s || !im || !S) return;
+    const k = Math.min(1, 512 / Math.max(im.width, im.height));
+    const cv = document.createElement('canvas'); cv.width = Math.max(1, im.width * k | 0); cv.height = Math.max(1, im.height * k | 0);
+    const x = cv.getContext('2d'); const item = { l: LAYER_GO, o: 9990, t: 0, draw(ctx) {
+      const t = this.t; if (t > 1) return;
+      x.globalCompositeOperation = 'source-over'; x.clearRect(0, 0, cv.width, cv.height); x.drawImage(im, 0, 0, cv.width, cv.height);
+      x.globalCompositeOperation = 'source-in';
+      const W = cv.width, H = cv.height, p = lerp(-0.6, 1.6, t);
+      const g = x.createLinearGradient(W * (p - 0.35), H * (p - 0.35 - 0.3), W * (p + 0.35), H * (p + 0.35 - 0.3));
+      g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.5, 'rgba(255,255,255,0.85)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      x.fillStyle = g; x.fillRect(0, 0, W, H);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      R.drawSR(ctx, S, { ...sr, alpha: 0.9 }, 1, cv); ctx.restore();
+    } };
+    S.custom.push(item);
+    tween(0.75, v => item.t = v, E.inOutQuad).then(() => { const i = S.custom.indexOf(item); if (i >= 0) S.custom.splice(i, 1); });
+  },
+};
+const Praise = {
+  words: ['Tuyệt vời!', 'Sạch bong!', 'Hoàn hảo!', 'Xuất sắc!', 'Quá đỉnh!', 'Lấp lánh!'],
+  show() {
+    const el = document.getElementById('praise'); if (!el) return;
+    el.textContent = this.words[(Math.random() * this.words.length) | 0];
+    el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
   },
 };

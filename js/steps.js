@@ -61,21 +61,37 @@ class Tool {
   }
   onDown() {
     if (!this.ok) return; killTweens(this); for (const t of this.tuts) S.setActive(t, false);
-    this.held = true; const n = S.node(this.go);
-    tween(0.18, k => n.punch = 1 + 0.12 * Math.sin(k * Math.PI), E.outQuad).then(() => n.punch = 1);
+    this.held = true;
+    const tip = this.tipNode(); this.tipTarget = tip ? S.wpos(tip) : null;
+    tween(0.18, k => this.punchV = 1 + 0.1 * Math.sin(k * Math.PI), E.outQuad).then(() => this.punchV = 1);
     vibrate(12);
   }
   onDrag(delta) {
     if (!this.ok) return; const p = S.wpos(this.go); S.setWpos(this.go, p[0] + delta[0], p[1] + delta[1]);
-    this.tiltT = clamp(-delta[0] / Math.max(G.dt, 0.008) * 1.6, -14, 14);
+    if (this.tipTarget) { this.tipTarget = [this.tipTarget[0] + delta[0], this.tipTarget[1] + delta[1]]; this.fixTip(); }
+    this.tiltT = clamp(-delta[0] / Math.max(G.dt, 0.008) * 1.2, -10, 10);
     this.hap += G.dt; if (this.hap > 0.09) { this.hap = 0; vibrate(6); }
   }
-  onUp() { this.held = false; this.tiltT = 0; }
+  onUp() { this.held = false; this.tiltT = 0; this.tipTarget = null; }
+  tipNode() { return this.tip && S.node(this.tip) ? this.tip : null; }
+  // keep the working tip exactly where the finger drove it, whatever rotation/scale the tool has
+  fixTip() {
+    const tip = this.tipNode(); if (!tip || !this.tipTarget) return;
+    const c = S.wpos(tip), p = S.wpos(this.go);
+    S.setWpos(this.go, p[0] + this.tipTarget[0] - c[0], p[1] + this.tipTarget[1] - c[1]);
+  }
+  // tilt / squash pivot around the tool's working tip so the clean point never drifts
   tick(dt) {
-    if (!this.ok) return; const n = S.node(this.go); if (!n) return;
+    if (!this.ok) return; const n = S.node(this.go); if (!n || !S.activeIH(this.go)) return;
+    const tip = this.tip && S.node(this.tip) ? this.tip : null;
+    const before = tip ? S.wpos(tip) : null;
     const cur = n.tilt || 0; const tgt = this.held ? this.tiltT : 0;
-    n.tilt = cur + (tgt - cur) * Math.min(1, dt * 12); this.tiltT *= Math.max(0, 1 - dt * 6);
-    if (this.held && Input.down) { const w = Math.sin(G.time * 38) * 0.012; n.punch = (n.punch || 1) * 0 + 1 + w; } else if (!this.held && n.punch && Math.abs(n.punch - 1) < 0.05) n.punch = 1;
+    n.tilt = cur + (tgt - cur) * Math.min(1, dt * 12); if (Math.abs(n.tilt) < 0.01) n.tilt = 0;
+    this.tiltT *= Math.max(0, 1 - dt * 6);
+    const wob = this.held && Input.down ? Math.sin(G.time * 38) * 0.01 : 0;
+    n.punch = (this.punchV || 1) + wob;
+    if (this.held && this.tipTarget) this.fixTip();
+    else if (before) { const after = S.wpos(tip); const p = S.wpos(this.go); S.setWpos(this.go, p[0] + before[0] - after[0], p[1] + before[1] - after[1]); }
   }
   pos() { return this.ok ? S.wpos(this.go) : Input.pos; }
 }
@@ -198,35 +214,69 @@ async function playAnim(a, sac) {
 }
 
 // ---------- Mask drawer ----------
+// Per-plane cache in sprite pixel space: strokes are applied incrementally,
+// so rendering a plane is a single drawImage (no full-screen compositing).
+class PlaneCache {
+  constructor(sr, mode) {
+    this.sr = sr; this.mode = mode;
+    const s = G.sprites[sr.sp], im = spriteImg.get(sr.sp); this.ok = !!(s && im); if (!this.ok) return;
+    const k = Math.min(1, 1024 / Math.max(im.width, im.height));
+    this.cw = Math.max(1, Math.round(im.width * k)); this.ch = Math.max(1, Math.round(im.height * k));
+    let src = im;
+    if (k < 1) { src = document.createElement('canvas'); src.width = this.cw; src.height = this.ch; src.getContext('2d').drawImage(im, 0, 0, this.cw, this.ch); }
+    this.src = src;
+    this.cv = document.createElement('canvas'); this.cv.width = this.cw; this.cv.height = this.ch;
+    this.cx = this.cv.getContext('2d');
+    if (mode === 'mask') this.cx.drawImage(src, 0, 0, this.cw, this.ch);
+    else this.pat = this.cx.createPattern(src, 'no-repeat');
+  }
+  T() { // world -> cache pixel
+    const s = G.sprites[this.sr.sp]; let w = s.w / s.ppu, h = s.h / s.ppu; if (this.sr.dm) { w = this.sr.sz[0]; h = this.sr.sz[1]; }
+    const P = [(this.sr.fx ? -1 : 1) * this.cw / w, 0, 0, -(this.sr.fy ? -1 : 1) * this.ch / h, s.px * this.cw, (1 - s.py) * this.ch];
+    return M.mul(P, M.inv(S.wm(this.sr.go)));
+  }
+  stroke(a, b, r) {
+    if (!this.ok) return;
+    const c = this.cx, T = this.T();
+    c.setTransform(T[0], T[1], T[2], T[3], T[4], T[5]);
+    if (this.mode === 'mask') { c.globalCompositeOperation = 'destination-out'; c.strokeStyle = c.fillStyle = '#000'; }
+    else {
+      c.globalCompositeOperation = 'source-over';
+      const I = M.inv(T); try { this.pat.setTransform(new DOMMatrix([I[0], I[1], I[2], I[3], I[4], I[5]])); } catch (e) { }
+      c.strokeStyle = c.fillStyle = this.pat;
+    }
+    c.lineCap = 'round'; c.lineJoin = 'round'; c.lineWidth = r * 2;
+    c.beginPath();
+    if (a && (a[0] !== b[0] || a[1] !== b[1])) { c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); c.stroke(); }
+    else { c.arc(b[0], b[1], r, 0, Math.PI * 2); c.fill(); }
+    c.setTransform(1, 0, 0, 1, 0, 0); c.globalCompositeOperation = 'source-over';
+  }
+  fadeStep(a) {
+    if (!this.ok) return; const c = this.cx; c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a;
+    if (this.mode === 'mask') { c.globalCompositeOperation = 'destination-out'; c.fillStyle = '#000'; c.fillRect(0, 0, this.cw, this.ch); }
+    else c.drawImage(this.src, 0, 0, this.cw, this.ch);
+    c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+  }
+}
 class Drawer {
   constructor(mb) {
     const d = mb.d; this.d = d;
     this.areas = (d.fillAreas || []).map(r => S.colOf(r)).filter(Boolean);
     this.maskPlanes = (d.maskingPlanes || []).map(r => S.comp(r)).filter(c => c && c.k === 'SR');
     this.unmaskPlanes = (d.unmaskingPlanes || []).map(r => S.comp(r)).filter(c => c && c.k === 'SR');
+    this.unmaskPlanes.forEach(p => { const i = this.maskPlanes.indexOf(p); if (i >= 0) this.maskPlanes.splice(i, 1); });
     this.maskPoint = S.goOf(d.maskPoint);
     this.vr = Math.max(0.1, d.visualRadius || 0.5); this.fr = Math.max(0.1, d.fillRadius || 0.5);
-    this.state = 'none';
     for (const p of this.maskPlanes) S.drawers.set(p.id, { drawer: this, mode: 'mask' });
     for (const p of this.unmaskPlanes) S.drawers.set(p.id, { drawer: this, mode: 'unmask' });
-    this.cv = document.createElement('canvas'); this.cx = this.cv.getContext('2d');
+    this.caches = new Map();
     this.state = 'init';
-    this.setupCanvas();
   }
-  setupCanvas() {
-    let b = null;
-    const add = q => { if (!q) return; b = b ? { x0: Math.min(b.x0, q.x0), y0: Math.min(b.y0, q.y0), x1: Math.max(b.x1, q.x1), y1: Math.max(b.y1, q.y1) } : { ...q }; };
-    for (const p of [...this.maskPlanes, ...this.unmaskPlanes]) add(S.spriteBounds(p));
-    for (const a of this.areas) add(S.colBounds(a));
-    if (!b) b = { x0: -10, y0: -10, x1: 10, y1: 10 };
-    const m = 2; b.x0 -= m; b.y0 -= m; b.x1 += m; b.y1 += m;
-    this.b = b;
-    const w = b.x1 - b.x0, h = b.y1 - b.y0;
-    this.res = Math.min(60, 1400 / Math.max(w, h));
-    this.cv.width = Math.ceil(w * this.res); this.cv.height = Math.ceil(h * this.res);
-  }
+  cacheOf(sr) { return this.caches.get(sr.id); }
   generate() {
-    this.cx.clearRect(0, 0, this.cv.width, this.cv.height);
+    this.caches.clear();
+    for (const p of this.maskPlanes) this.caches.set(p.id, new PlaneCache(p, 'mask'));
+    for (const p of this.unmaskPlanes) this.caches.set(p.id, new PlaneCache(p, 'unmask'));
     this.pts = []; this.total = 0; this.filled = 0;
     const cols = this.d.matrixCol || 20, rows = this.d.matrixRow || 20;
     for (const a of this.areas) {
@@ -239,20 +289,16 @@ class Drawer {
       this.pts.push(...list);
     }
     if (!this.areas.length) { // fallback: grid over plane bounds
-      const bb = this.b; for (let r = 0; r <= 10; r++) for (let c = 0; c <= 10; c++) this.pts.push({ p: [bb.x0 + 2 + (bb.x1 - bb.x0 - 4) * c / 10, bb.y0 + 2 + (bb.y1 - bb.y0 - 4) * r / 10], f: false });
+      const sr = this.maskPlanes[0] || this.unmaskPlanes[0];
+      const bb = sr ? S.spriteBounds(sr) : { x0: -3, y0: -3, x1: 3, y1: 3 };
+      for (let r = 0; r <= 10; r++) for (let c = 0; c <= 10; c++) this.pts.push({ p: [lerp(bb.x0, bb.x1, c / 10), lerp(bb.y0, bb.y1, r / 10)], f: false });
     }
     this.total = this.pts.length;
     this.last = null; this.state = 'drawing';
   }
-  toC(p) { return [(p[0] - this.b.x0) * this.res, (this.b.y1 - p[1]) * this.res]; }
   start() { this.last = null; }
   draw(p) {
-    const c = this.cx; const q = this.toC(p);
-    c.strokeStyle = '#000'; c.fillStyle = '#000'; c.lineCap = 'round'; c.lineJoin = 'round';
-    c.lineWidth = this.vr * 2 * this.res;
-    if (this.last) { const l = this.toC(this.last); c.beginPath(); c.moveTo(l[0], l[1]); c.lineTo(q[0], q[1]); c.stroke(); }
-    else { c.beginPath(); c.arc(q[0], q[1], this.vr * this.res, 0, Math.PI * 2); c.fill(); }
-    // fill check along segment
+    for (const c of this.caches.values()) c.stroke(this.last, p, this.vr);
     const a = this.last || p; const steps = Math.min(60, Math.max(1, Math.ceil(dist(a, p) / (this.fr * 0.5))));
     for (let i = 0; i <= steps; i++) {
       const s = [lerp(a[0], p[0], i / steps), lerp(a[1], p[1], i / steps)];
@@ -262,23 +308,13 @@ class Drawer {
   }
   end() { this.last = null; }
   percent() { return this.total ? this.filled / this.total : 1; }
-  drawStroke(t) {
-    const s = R.ppu() / this.res;
-    const vm = R.viewM();
-    // canvas pixel (0,0) == world (x0, y1)
-    t.setTransform(s, 0, 0, s, vm[4] + this.b.x0 * vm[0], vm[5] + this.b.y1 * vm[3]);
-    t.globalAlpha = 1;
-    t.drawImage(this.cv, 0, 0);
-    t.setTransform(1, 0, 0, 1, 0, 0);
-  }
   async finish() {
-    // fade remaining area in quickly
     this.state = 'finishing';
-    const c = this.cx;
-    await tween(0.35, k => { c.globalAlpha = 0.25; c.fillStyle = '#000'; c.fillRect(0, 0, this.cv.width, this.cv.height); c.globalAlpha = 1; });
-    this.state = 'finished';
+    await tween(0.35, k => { for (const c of this.caches.values()) c.fadeStep(0.25); });
+    this.state = 'finished'; this.caches.clear();
     for (const p of this.unmaskPlanes) { p.alpha = 1; S.setActive(p.go, true); }
-    for (const p of this.maskPlanes) if (!this.unmaskPlanes.includes(p)) S.setActive(p.go, false);
+    for (const p of this.maskPlanes) S.setActive(p.go, false);
+    const top = this.unmaskPlanes[0]; if (top) Shine.play(top);
   }
 }
 
@@ -294,7 +330,7 @@ class Step {
   async run() {
     Input.handler = null;
     await this.prepare();
-    if (this.tl) this.tl.setLayer();
+    if (this.tl) { this.tl.setLayer(); this.tl.tip = (this.dr && this.dr.maskPoint) || this.mp || this.vp || this.cp || null; }
     await this.start();
     Input.handler = this; Input.enabled = true;
     await this.execute();
@@ -799,7 +835,7 @@ class FadeObjectStep extends Step {
       if (q.col && S.pointIn(q.col, tp)) {
         any = true; S.setActive(q.sr.go, true);
         const rate = Math.abs(q.toValue - q.fromValue) / (this.cfg.fadeDuration || 1);
-        q.a += Math.sign(q.toValue - q.a) * rate * G.dt; if (Math.abs(q.a - q.toValue) < 0.01) { q.a = q.toValue; q.done = true; this.sac.interact(q.id); }
+        const dd = q.toValue - q.a, st = rate * G.dt; q.a = Math.abs(dd) <= st ? q.toValue : q.a + Math.sign(dd) * st; if (Math.abs(q.a - q.toValue) < 0.005) { q.a = q.toValue; q.done = true; this.sac.interact(q.id); }
         q.sr.alpha = q.a;
       }
     }

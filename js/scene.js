@@ -205,8 +205,9 @@ const R = {
     this.tmp = document.createElement('canvas'); this.tctx = this.tmp.getContext('2d');
     this.mk = document.createElement('canvas'); this.mctx = this.mk.getContext('2d');
   },
+  maxDpr: 2,
   resize(w, h) {
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.dpr = Math.min(window.devicePixelRatio || 1, this.maxDpr);
     this.W = Math.round(w * this.dpr); this.H = Math.round(h * this.dpr);
     for (const c of [this.cv, this.tmp, this.mk]) { c.width = this.W; c.height = this.H; }
     this.aspect = w / h;
@@ -219,15 +220,21 @@ const R = {
   },
   halfW() { return this.cam.size * this.aspect; },
   setT(ctx, m) { ctx.setTransform(m[0], m[1], m[2], m[3], m[4], m[5]); },
-  drawSR(ctx, sc, sr, alphaMul = 1) {
-    const s = G.sprites[sr.sp]; const im = spriteImg.get(sr.sp); if (!s || !im) return;
+  screenBox(sc, sr) {
+    const b = sc.spriteBounds(sr), v = this.viewM();
+    let x0 = Math.floor(b.x0 * v[0] + v[4]) - 2, x1 = Math.ceil(b.x1 * v[0] + v[4]) + 2, y0 = Math.floor(b.y1 * v[3] + v[5]) - 2, y1 = Math.ceil(b.y0 * v[3] + v[5]) + 2;
+    x0 = Math.max(0, x0); y0 = Math.max(0, y0); x1 = Math.min(this.W, x1); y1 = Math.min(this.H, y1);
+    return x1 > x0 && y1 > y0 ? [x0, y0, x1 - x0, y1 - y0] : null;
+  },
+  drawSR(ctx, sc, sr, alphaMul = 1, over = null) {
+    const s = G.sprites[sr.sp]; const im = over || spriteImg.get(sr.sp); if (!s || !im) return;
     const m = M.mul(this.viewM(), sc.wm(sr.go));
     this.setT(ctx, m);
     let w = s.w / s.ppu, h = s.h / s.ppu;
     if (sr.dm) { w = sr.sz[0]; h = sr.sz[1]; }
     ctx.globalAlpha = clamp(sr.alpha * alphaMul, 0, 1);
     ctx.scale(sr.fx ? -1 : 1, sr.fy ? 1 : -1);
-    ctx.drawImage(tinted(sr, im), -s.px * w, -(1 - s.py) * h, w, h);
+    ctx.drawImage(over ? im : tinted(sr, im), -s.px * w, -(1 - s.py) * h, w, h);
   },
   drawMasks(ctx, sc, masks) {
     for (const m of masks) {
@@ -259,27 +266,26 @@ const R = {
       const sr = it.r;
       const dr = sr ? sc.drawers.get(sr.id) : null;
       const mi = sr ? sr.mi : 0;
-      if (dr && dr.drawer.state !== 'finished' && dr.drawer.state !== 'none') {
-        // custom stencil masking for mask steps
-        const t = this.tctx; t.setTransform(1, 0, 0, 1, 0, 0); t.globalCompositeOperation = 'source-over'; t.clearRect(0, 0, this.W, this.H);
-        this.drawSR(t, sc, sr);
-        t.globalCompositeOperation = dr.mode === 'unmask' ? 'destination-in' : 'destination-out';
-        dr.drawer.drawStroke(t);
-        t.globalCompositeOperation = 'source-over';
-        ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.drawImage(this.tmp, 0, 0);
+      if (dr && dr.drawer.state !== 'finished') {
+        if (dr.drawer.state === 'init') { if (dr.mode === 'unmask') continue; this.drawSR(ctx, sc, sr); continue; }
+        const pc = dr.drawer.cacheOf(sr);
+        if (pc && pc.ok) this.drawSR(ctx, sc, sr, 1, pc.cv);
         continue;
       }
       if (mi && sr) {
         const masks = this.findMasks(it);
         if (masks.length) {
-          const t = this.tctx; t.setTransform(1, 0, 0, 1, 0, 0); t.globalCompositeOperation = 'source-over'; t.clearRect(0, 0, this.W, this.H);
+          const bx = this.screenBox(sc, sr); if (!bx) continue;
+          const [x, y, w, h] = bx;
+          const t = this.tctx; t.save(); t.setTransform(1, 0, 0, 1, 0, 0); t.globalCompositeOperation = 'source-over'; t.clearRect(x, y, w, h);
+          t.beginPath(); t.rect(x, y, w, h); t.clip();
           this.drawSR(t, sc, sr);
-          const mk = this.mctx; mk.setTransform(1, 0, 0, 1, 0, 0); mk.clearRect(0, 0, this.W, this.H);
-          this.drawMasks(mk, sc, masks);
+          const mk = this.mctx; mk.save(); mk.setTransform(1, 0, 0, 1, 0, 0); mk.clearRect(x, y, w, h); mk.beginPath(); mk.rect(x, y, w, h); mk.clip();
+          this.drawMasks(mk, sc, masks); mk.restore();
           t.setTransform(1, 0, 0, 1, 0, 0); t.globalAlpha = 1;
           t.globalCompositeOperation = mi === 1 ? 'destination-in' : 'destination-out';
-          t.drawImage(this.mk, 0, 0); t.globalCompositeOperation = 'source-over';
-          ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.drawImage(this.tmp, 0, 0);
+          t.drawImage(this.mk, x, y, w, h, x, y, w, h); t.restore();
+          ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.drawImage(this.tmp, x, y, w, h, x, y, w, h);
           continue;
         }
         if (mi === 1) continue; // visible inside mask, no mask -> hidden
@@ -360,5 +366,50 @@ function drawSpine(ctx, sc, comp) {
   ctx.scale(inst.sd.scale * (comp.fx ? -1 : 1), inst.sd.scale * (comp.fy ? -1 : 1));
   inst.skel.color.a = clamp(comp.alpha, 0, 1);
   ctx.globalAlpha = 1;
-  try { spineRenderer.draw(inst.skel); } catch (e) { }
+  try { drawSkeletonFast(ctx, inst.skel); } catch (e) { }
+}
+
+// Region attachments: one affine drawImage per quad (no per-triangle clip).
+// Meshes: triangle rendering. Additive slots use 'lighter'.
+const _wv = new Float32Array(1024);
+function drawSkeletonFast(ctx, skel) {
+  const sk = skel.color; const order = skel.drawOrder;
+  for (let i = 0; i < order.length; i++) {
+    const slot = order[i]; if (!slot.bone.active) continue;
+    const att = slot.getAttachment(); if (!att) continue;
+    const isRegion = att instanceof spine.RegionAttachment, isMesh = att instanceof spine.MeshAttachment;
+    if (!isRegion && !isMesh) continue;
+    const region = att.region; if (!region || !region.texture) continue;
+    const img = region.texture.getImage(); if (!img) continue;
+    const a = sk.a * slot.color.a * att.color.a; if (a <= 0.003) continue;
+    ctx.globalAlpha = a;
+    ctx.globalCompositeOperation = slot.data.blendMode === 1 ? 'lighter' : 'source-over';
+    if (isRegion) {
+      att.computeWorldVertices(slot, _wv, 0, 2);
+      const uv = att.uvs, W = img.width, H = img.height;
+      // vertices 0,1,2 with their uvs -> affine
+      const x0 = _wv[0], y0 = _wv[1], x1 = _wv[2], y1 = _wv[3], x2 = _wv[4], y2 = _wv[5];
+      const u0 = uv[0] * W, v0 = uv[1] * H, u1 = uv[2] * W, v1 = uv[3] * H, u2 = uv[4] * W, v2 = uv[5] * H;
+      const du1 = u1 - u0, dv1 = v1 - v0, du2 = u2 - u0, dv2 = v2 - v0;
+      const det = du1 * dv2 - du2 * dv1; if (!det) continue;
+      const id = 1 / det, dx1 = x1 - x0, dy1 = y1 - y0, dx2 = x2 - x0, dy2 = y2 - y0;
+      const A = (dv2 * dx1 - dv1 * dx2) * id, B = (dv2 * dy1 - dv1 * dy2) * id, C = (du1 * dx2 - du2 * dx1) * id, D = (du1 * dy2 - du2 * dy1) * id;
+      const E = x0 - A * u0 - C * v0, F = y0 - B * u0 - D * v0;
+      const us = [uv[0], uv[2], uv[4], uv[6]].map(v => v * W), vs = [uv[1], uv[3], uv[5], uv[7]].map(v => v * H);
+      const sx = Math.min(...us), sy = Math.min(...vs), sw = Math.max(...us) - sx, sh = Math.max(...vs) - sy;
+      if (sw < 0.5 || sh < 0.5) continue;
+      ctx.save(); ctx.transform(A, B, C, D, E, F);
+      ctx.drawImage(img, sx, sy, sw, sh, sx, sy, sw, sh);
+      ctx.restore();
+    } else {
+      const n = att.worldVerticesLength; const wv = n <= _wv.length ? _wv : new Float32Array(n);
+      att.computeWorldVertices(slot, 0, n, wv, 0, 2);
+      const uv = att.uvs, tr = att.triangles;
+      for (let j = 0; j < tr.length; j += 3) {
+        const t1 = tr[j] * 2, t2 = tr[j + 1] * 2, t3 = tr[j + 2] * 2;
+        spineRenderer.drawTriangle(img, wv[t1], wv[t1 + 1], uv[t1], uv[t1 + 1], wv[t2], wv[t2 + 1], uv[t2], uv[t2 + 1], wv[t3], wv[t3 + 1], uv[t3], uv[t3 + 1]);
+      }
+    }
+  }
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
 }

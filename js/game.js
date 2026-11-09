@@ -120,7 +120,7 @@ async function runLevel(gen) {
     if (!alive()) return;
     Audio2.play('step_completed', 0.6);
     UI.stepDone(Game.stepNo);
-    Juice.burst(); vibrate(35);
+    Juice.burst(); vibrate(35); Praise.show();
     if (pl.stepGo) stopParticlesUnder(pl.stepGo);
     pl.isFinish = true;
     const next = getPl(cur + 1);
@@ -186,6 +186,7 @@ function onLevelComplete() {
   vibrate([60, 40, 60]);
   Juice.confetti();
   setTimeout(() => UI.showWin(), 900);
+  prefetchLevel(Game.order[(Game.idx + 1) % Game.order.length]);
 }
 
 // ---------- main loop ----------
@@ -208,7 +209,9 @@ function stepFrame(t) {
     S.updateWorld();
     tickParticles(S, dt);
     for (const t of Tool.all) t.tick(dt);
-    for (const c of Object.values(S.comps)) if (c.k === 'SPINE' && c.inst && S.node(c.go).ah) c.inst.update(dt);
+    if (!S.spList) S.spList = Object.values(S.comps).filter(c => c.k === 'SPINE');
+    for (const c of S.spList) if (c.inst && S.node(c.go).ah) c.inst.update(dt);
+    Perf.tick();
     R.render(S, Game.fade);
     FX.draw(dt);
     Juice.draw(R.ctx, R.W, R.H, dt);
@@ -252,6 +255,8 @@ const FX = {
   touch() { }, move(e, cv) {
     if (!Input.enabled || !Input.handler || Math.random() > 0.35) return;
     const h = Input.handler; let wp = null;
+    if (h._hasPS === undefined) h._hasPS = S.descendants(h.go).some(g => S.compsOf(g, "PS").length);
+    if (h._hasPS) return; // the tool has its own Unity particles
     if (h.dr && h.dr.maskPoint) wp = S.wpos(h.dr.maskPoint); else if (h.tl && h.tl.ok) wp = h.tl.pos();
     if (!wp) return;
     this.parts.push({ wx: wp[0] + rnd(-.3, .3), wy: wp[1] + rnd(-.3, .3), vx: rnd(-1, 1), vy: rnd(0.5, 2), t: 0, life: rnd(.4, .8), s: rnd(.06, .16) });
@@ -344,3 +349,27 @@ async function boot() {
 boot();
 // debug helper: skip current step
 window.dbgSkip = () => { const p = Game.curPl; if (p && p.inst) p.inst.finished = true; };
+
+// adaptive resolution: drop the canvas pixel ratio if frames are consistently slow
+const Perf = {
+  last: 0, acc: 0, n: 0, cool: 0,
+  tick() {
+    const now = performance.now(); const d = now - (this.last || now); this.last = now;
+    if (d <= 0 || d > 200 || document.hidden) return;
+    this.acc += d; this.n++;
+    if (this.n >= 90) {
+      const avg = this.acc / this.n; this.acc = 0; this.n = 0;
+      if (avg > 24 && R.maxDpr > 1 && Math.min(window.devicePixelRatio || 1, R.maxDpr) > 1) { R.maxDpr = Math.max(1, Math.min(window.devicePixelRatio || 1, R.maxDpr) - 0.5); layout(); }
+    }
+  },
+};
+// warm the cache for the next level while the win popup is up
+const prefetched = new Set();
+async function prefetchLevel(id) {
+  if (!id || prefetched.has(id)) return; prefetched.add(id);
+  try {
+    const d = await getJSON(A + 'levels/' + id + '.json');
+    const sps = new Set(); for (const c of Object.values(d.comps)) if ((c.k === 'SR' || c.k === 'SM') && c.sp) sps.add(c.sp);
+    for (const g of sps) await loadSprite(g);
+  } catch (e) { }
+}
