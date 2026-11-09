@@ -328,17 +328,15 @@ class MaskStep extends Step {
   drag(p, delta) {
     this.tl.onDrag(delta);
     if (!this.dr) { this.finished = true; return; }
-    const mp = this.dr.maskPoint ? S.wpos(this.dr.maskPoint) : p;
-    this.dr.draw(mp);
-    if (dist(mp, p) > 0.2) { // original also paints under the finger
-      const keep = this.dr.last; this.dr.last = this.lastFinger || null; this.dr.draw(p); this.lastFinger = p; this.dr.last = keep;
-    }
-    this.dragLoop();
+    // only the tool's clean point cleans, and only while it is over the object's collider
+    const mp = this.dr.maskPoint ? S.wpos(this.dr.maskPoint) : this.tl.pos();
+    const inArea = !this.dr.areas.length || this.dr.areas.some(a => S.distTo(a, mp) <= this.dr.vr * 0.5);
+    if (inArea) { this.dr.draw(mp); this.dragLoop(); } else { this.dr.end(); Audio2.stopLoop(); }
     const pc = this.dr.percent(); this.progress(Math.min(1, pc / 0.8));
     if (pc >= 0.8) this.finished = true;
     if (Math.random() < 0.08) vibrate(8);
   }
-  up() { this.lastFinger = null; this.dr && this.dr.end(); Audio2.stopLoop(); stopParticlesUnder(this.go); this.sac.stop(); if (!this.finished) this.tl.moveBack(); }
+  up() { this.dr && this.dr.end(); Audio2.stopLoop(); stopParticlesUnder(this.go); this.sac.stop(); if (!this.finished) this.tl.moveBack(); }
   async complete() { this.progress(1); if (this.dr) await this.dr.finish(); if (this.tl) await this.tl.moveOut(); }
 }
 
@@ -538,7 +536,7 @@ class DragToolStep extends Step {
     let best = null, bd = 1e9;
     for (const q of this.pl) {
       if (q.done) continue; const t = q.target || q.snap; if (!t) continue;
-      const d = Math.min(dist(p, S.wpos(t)), dist(tp, S.wpos(t)));
+      const d = dist(tp, S.wpos(t));
       if (d < bd) { bd = d; best = q; }
     }
     if (best && bd <= r) {
@@ -798,7 +796,7 @@ class FadeObjectStep extends Step {
     let any = false;
     for (const q of this.pl) {
       if (q.done || !q.sr) continue;
-      if ((q.col && (S.pointIn(q.col, p) || S.pointIn(q.col, tp)))) {
+      if (q.col && S.pointIn(q.col, tp)) {
         any = true; S.setActive(q.sr.go, true);
         const rate = Math.abs(q.toValue - q.fromValue) / (this.cfg.fadeDuration || 1);
         q.a += Math.sign(q.toValue - q.a) * rate * G.dt; if (Math.abs(q.a - q.toValue) < 0.01) { q.a = q.toValue; q.done = true; this.sac.interact(q.id); }
@@ -842,7 +840,7 @@ class SpineStepBase extends Step {
       return q;
     });
   }
-  over(q, p) { return (q.col && S.pointIn(q.col, p)) || (q.sp && dist(p, S.wpos(q.sp.go)) <= 1.5); }
+  over(q, p) { return q.col ? S.pointIn(q.col, p) : (q.sp && dist(p, S.wpos(q.sp.go)) <= 1.5); }
   async prepare() { if (!this.pl.length) this.finished = true; }
   count() { return this.pl.filter(q => q.done).length; }
 }
@@ -868,14 +866,14 @@ class DragToPlaySpineStep extends SpineStepBase {
   down() { this.tl.onDown(); this.playPick(); this.sac.pick(); }
   drag(p, d) { this.tl.onDrag(d); }
   hold(p) {
-    const tp = this.toolVariant ? (this.mp ? S.wpos(this.mp) : this.tl.pos()) : p;
+    const tp = this.mp ? S.wpos(this.mp) : this.tl.ok ? this.tl.pos() : p;
     let any = false;
     for (const q of this.pl) {
       if (q.done || !q.sp || !q.sp.inst) continue;
       const inst = q.sp.inst; const e = inst.state.getCurrent(0);
       if (!q.started) { inst.setSkin(q.playSkin); const en = inst.state.setAnimation(0, q.playAnimation, false); en.timeScale = 0; q.started = true; }
       const en = inst.state.getCurrent(0); if (!en) continue;
-      const isOver = this.over(q, tp) || (this.toolVariant && this.over(q, p));
+      const isOver = this.over(q, tp);
       en.timeScale = isOver ? (q.timeScale || 1) : 0;
       if (isOver) any = true;
       if (inst.progress() >= (this.toolVariant ? (q.completeThreshold || this.th) : 0.999)) { q.done = true; en.timeScale = 0; this.sac.interact(q.id); vibrate(25); }
