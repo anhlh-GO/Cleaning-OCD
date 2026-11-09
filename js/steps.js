@@ -722,72 +722,138 @@ class PesticideStep extends Step {
   async complete() { await waitUntil(() => this.pests.every(p => p.dead || !p.on)); this.walking = false; if (this.tl) await this.tl.moveOut(); await this.sac.end(); }
 }
 
+// Tweezers / peel step: drag the tool onto a patch (or tap the patch) -> it grabs it,
+// then pull: the tool keeps holding the peeled edge and follows the finger (relative),
+// release over the finish area -> the patch flies off with the tool.
 class WaxToolStep extends Step {
   constructor(mb) {
     super(mb);
     this.tl = this.tool(this.d.toolVisual);
     this.cfg = Object.assign({ snapDistance: 3, snapDuration: 0.25, delayToPeelDuration: 0.5 }, cfgOf(this.d.customConfig, 'WaxToolStepConfigSO'));
+    const nz = o => o && (o.x || o.y);
     this.pl = (this.d.waxPlacements || []).map((p, i) => {
       const q = { ...p, target: S.goOf(p.targetTrans), snapT: S.goOf(p.snapTransform), back: S.goOf(p.waxBack), front: S.goOf(p.waxFront), mask: S.goOf(p.maskTransform), peel: S.colOf(p.peelArea), bound: S.colOf(p.boundArea), fin: S.colOf(p.finishArea), done: false };
-      if (q.back) { const n = S.node(q.back); q.bo = [n.px, n.py, n.rz, n.m0.slice()]; if (p.peelOrigin) { q.bo[0] = p.peelOrigin.x; q.bo[1] = p.peelOrigin.y; } }
-      if (q.mask) { const n = S.node(q.mask); q.mo = [n.px, n.py, n.rz, n.m0.slice()]; if (p.maskOrigin) { q.mo[0] = p.maskOrigin.x; q.mo[1] = p.maskOrigin.y; } }
-      for (const sr of q.back ? S.srsUnder(q.back) : []) sr.o = 10 + i * 5 + 2;
-      for (const sr of q.front ? S.srsUnder(q.front) : []) sr.o = 10 + i * 5 + 1;
+      // serialized origins are runtime values (0,0 in the asset): use the authored local pose
+      if (q.back) { const n = S.node(q.back); q.bo = [nz(p.peelOrigin) ? p.peelOrigin.x : n.px, nz(p.peelOrigin) ? p.peelOrigin.y : n.py, n.rz, n.m0.slice()]; }
+      if (q.mask) { const n = S.node(q.mask); q.mo = [nz(p.maskOrigin) ? p.maskOrigin.x : n.px, nz(p.maskOrigin) ? p.maskOrigin.y : n.py, n.rz, n.m0.slice()]; }
+      q.frontGo = q.front || (q.peel ? S.node(q.peel.go).parent : null);
+      // restore the peel-fold masking lost in the rip: both the patch and its flipped flap are
+      // visible only outside the mask, which sits above the fold line and slides with the peel
+      const hasMask = q.mask && S.descendants(q.mask).some(g => S.compsOf(g, 'SM').length);
+      for (const sr of q.back ? S.compsOf(q.back, 'SR') : []) { sr.o = 10 + i * 5 + 2; if (hasMask) sr.mi = 2; }
+      for (const sr of q.frontGo ? S.compsOf(q.frontGo, 'SR') : []) { sr.o = 10 + i * 5 + 1; if (hasMask) sr.mi = 2; }
       return q;
     });
     this.count = 0;
   }
+  origin(q) { const bn = S.node(q.back); const pm = bn.parent ? S.wm(bn.parent) : [1, 0, 0, 1, 0, 0]; return M.ap(pm, q.bo[0], q.bo[1]); }
+  grabPoint(q) { return q.snapT ? S.wpos(q.snapT) : q.target ? S.wpos(q.target) : S.wpos(q.back); }
+  finPoint(q) { return q.fin ? S.colCenter(q.fin) : null; }
   async start() { if (this.tl) await this.tl.moveIn(); }
   down(p) {
     if (this.busy) return;
-    if (!this.snapped) {
-      this.tl.onDown();
-      for (const q of this.pl) if (!q.done && q.target && dist(p, S.wpos(q.target)) <= this.cfg.snapDistance) { this.snapTo(q); return; }
-    } else if (this.curT) {
-      this.peeling = (this.curT.peel && S.pointIn(this.curT.peel, p)) || (this.curT.back && dist(p, S.wpos(this.curT.back)) <= 2);
-      if (this.peeling) { this.playPick(); this.sac.pick(); }
-    }
-  }
-  async snapTo(q) {
-    this.busy = true; this.snapped = true; this.curT = q;
-    if (q.snapT) { const a = S.wpos(this.tl.go), b = S.wpos(q.snapT); await tween(this.cfg.snapDuration, k => S.setWpos(this.tl.go, lerp(a[0], b[0], k), lerp(a[1], b[1], k))); S.setWorldRz(this.tl.go, S.worldRz(q.snapT)); }
-    await this.sac.interact(q.id);
-    if (q.front) S.setActive(q.front, true);
-    await wait(this.cfg.delayToPeelDuration);
-    await this.tl.moveOut(); S.node(this.tl.go).rz = null;
-    this.busy = false;
+    this.downP = p; this.moved = 0;
+    if (!this.snapped) { this.tl.onDown(); this.playPick(); return; }
+    const q = this.curT; if (!q) return;
+    this.peeling = true; this.peelStart = p; this.org = this.origin(q);
+    this.sac.pick(); vibrate(15);
   }
   drag(p, d) {
     if (this.busy) return;
-    if (!this.snapped) { this.tl.onDrag(d); return; }
-    const q = this.curT; if (!q || !q.back || !this.peeling) return;
-    const tp = q.bound ? S.closestPoint(q.bound, p) : p;
-    const bn = S.node(q.back); const pm = bn.parent ? S.wm(bn.parent) : [1, 0, 0, 1, 0, 0];
-    const origin = M.ap(pm, q.bo[0], q.bo[1]);
-    const mid = [(tp[0] + origin[0]) / 2, (tp[1] + origin[1]) / 2];
+    this.moved += Math.hypot(d[0], d[1]);
+    if (!this.snapped) {
+      this.tl.onDrag(d);
+      // magnet: highlight the patch the tweezers are over
+      const near = this.nearest(this.tl.pos());
+      this.hot = near && near.d <= this.cfg.snapDistance ? near.q : null;
+      return;
+    }
+    const q = this.curT; if (!q || !this.peeling) return;
+    const o = this.org;
+    let tp = [o[0] + p[0] - this.peelStart[0], o[1] + p[1] - this.peelStart[1]];
+    if (q.bound) tp = S.closestPoint(q.bound, tp);
+    this.peelTo(q, tp);
+    const f = this.peelFrac(q); this.progress((this.count + f) / this.pl.length);
+    this.hap = (this.hap || 0) + Math.hypot(d[0], d[1]); if (this.hap > 0.25) { this.hap = 0; vibrate(8); Audio2.play('Cloth_Pick', 0.35); }
+  }
+  peelTo(q, tp) {
+    const o = this.org || this.origin(q);
+    const mid = [(tp[0] + o[0]) / 2, (tp[1] + o[1]) / 2];
     const ang = Math.atan2(tp[1] - mid[1], tp[0] - mid[0]) * 180 / Math.PI * 2 + 180;
     S.setWpos(q.back, tp[0], tp[1]); S.setWorldRz(q.back, ang);
     if (q.mask) { S.setWpos(q.mask, mid[0], mid[1]); S.setWorldRz(q.mask, ang / 2); }
-    this.dragLoop();
+    // the tweezers hold the peeled edge
+    const g = [tp[0] + this.toolOff[0], tp[1] + this.toolOff[1]];
+    S.setWpos(this.tl.go, g[0], g[1]);
+    this.tl.held = true; this.tl.tiltT = clamp((tp[0] - o[0]) * 12, -15, 15);
   }
-  async up() {
+  peelFrac(q) {
+    const o = this.org || this.origin(q), f = this.finPoint(q), b = S.wpos(q.back);
+    if (!f) return clamp(dist(b, o) / 1.5, 0, 1);
+    return clamp(dist(b, o) / Math.max(0.3, dist(f, o)), 0, 1);
+  }
+  nearest(pt) {
+    let best = null;
+    for (const q of this.pl) { if (q.done || !q.target) continue; const d = dist(pt, this.grabPoint(q)); if (!best || d < best.d) best = { q, d }; }
+    return best;
+  }
+  hitPatch(p) { return this.pl.find(q => !q.done && ((q.peel && S.distTo(q.peel, p) < 0.6) || (q.target && dist(p, this.grabPoint(q)) < 1.0))); }
+  async snapTo(q) {
+    this.busy = true; this.curT = q; this.hot = null;
+    const a = S.wpos(this.tl.go), b = this.grabPoint(q);
+    await tween(Math.max(0.15, this.cfg.snapDuration || 0), k => S.setWpos(this.tl.go, lerp(a[0], b[0], k), lerp(a[1], b[1], k)), E.outQuad);
+    if (q.snapT) S.setWorldRz(this.tl.go, S.worldRz(q.snapT));
+    vibrate(25); Audio2.play(this.pickAudio || 'Grap_Out', 0.8);
+    const n = S.node(this.tl.go); tween(0.12, k => n.punch = 1 - 0.08 * Math.sin(k * Math.PI)).then(() => n.punch = 1);
+    await Promise.race([this.sac.interact(q.id), wait(0.6)]);
+    if (q.front) S.setActive(q.front, true);
+    this.org = this.origin(q);
+    this.toolOff = [b[0] - S.wpos(q.back)[0], b[1] - S.wpos(q.back)[1]];
+    this.snapped = true; this.busy = false;
+  }
+  async up(p) {
     Audio2.stopLoop(); this.sac.stop();
     if (this.busy) return;
-    if (!this.snapped) { this.tl.moveBack(); return; }
-    const q = this.curT; if (!q || !this.peeling) return; this.peeling = false;
-    const ok = q.fin ? S.pointIn(q.fin, S.wpos(q.back)) : dist(S.wpos(q.back), M.ap(S.node(q.back).parent ? S.wm(S.node(q.back).parent) : [1, 0, 0, 1, 0, 0], q.bo[0], q.bo[1])) > 1.5;
+    if (!this.snapped) {
+      const tapQ = this.moved < 0.25 ? this.hitPatch(p) : null;
+      const near = this.nearest(this.tl.pos());
+      const q = tapQ || (near && near.d <= this.cfg.snapDistance ? near.q : null);
+      if (q) await this.snapTo(q); else this.tl.moveBack();
+      return;
+    }
+    const q = this.curT; if (!q || !this.peeling) return; this.peeling = false; this.tl.held = false;
+    const ok = (q.fin && S.pointIn(q.fin, S.wpos(q.back))) || this.peelFrac(q) >= 0.85;
     if (ok) {
-      q.done = true; Audio2.play(this.dragAudio); vibrate(30);
-      S.setActive(q.back, false); if (q.front) S.setActive(q.front, false);
+      this.busy = true; q.done = true; this.snapped = false; this.curT = null;
+      Audio2.play('Grap_Out', 0.9); vibrate([20, 30, 40]);
+      const o = this.org, b0 = S.wpos(q.back), t0 = S.wpos(this.tl.go);
+      const dir = [b0[0] - o[0], b0[1] - o[1]]; const L = Math.hypot(dir[0], dir[1]) || 1;
+      const fly = [dir[0] / L * 2.5 + 1.5, dir[1] / L * 2.5 + 3];
+      const r0 = S.getRz(q.back);
+      if (q.frontGo) S.setActive(q.frontGo, false);
+      { const sp = M.ap(R.viewM(), b0[0], b0[1]); Juice.burst(sp[0] / R.W, sp[1] / R.H, 12, false); }
+      await tween(0.45, k => {
+        S.setWpos(q.back, b0[0] + fly[0] * k, b0[1] + fly[1] * k); S.node(q.back).rz = r0 + 120 * k;
+        S.setWpos(this.tl.go, t0[0] + fly[0] * k, t0[1] + fly[1] * k);
+        S.setAlphaTree(q.back, 1 - k);
+      }, E.inQuad);
+      S.setActive(q.back, false);
       this.count++; this.progress(this.count / this.pl.length);
-      this.snapped = false; this.curT = null;
-      if (this.count >= this.pl.length) this.finished = true; else { this.busy = true; await this.tl.moveIn(); this.busy = false; }
+      const n = S.node(this.tl.go); n.rz = null; n.tilt = 0;
+      if (this.count >= this.pl.length) { this.finished = true; this.busy = false; return; }
+      await this.tl.moveIn(); this.busy = false;
     } else {
-      const reset = (go, o) => { const n = S.node(go); const x = n.px, y = n.py; return tween(0.2, k => { n.px = lerp(x, o[0], k); n.py = lerp(y, o[1], k); }).then(() => { n.rz = o[2]; n.m0 = o[3]; }); };
-      await Promise.all([reset(q.back, q.bo), q.mask ? reset(q.mask, q.mo) : null]);
+      // spring back, still holding the patch
+      this.busy = true;
+      const from = S.wpos(q.back), o = this.org;
+      await tween(0.25, k => this.peelTo(q, [lerp(from[0], o[0], k), lerp(from[1], o[1], k)]), E.outBack);
+      const reset = (go, oo) => { const n = S.node(go); n.px = oo[0]; n.py = oo[1]; n.rz = oo[2]; n.m0 = oo[3]; };
+      reset(q.back, q.bo); if (q.mask) reset(q.mask, q.mo);
+      this.peelTo(q, this.origin(q)); S.node(this.tl.go).tilt = 0;
+      this.busy = false;
     }
   }
-  async complete() { }
+  async complete() { if (this.tl) await this.tl.moveOut(); }
 }
 
 class ScaleObjectStep extends Step {
@@ -954,8 +1020,8 @@ const HINT = {
     if (st instanceof BlowStep || st instanceof VacuumStep) { const q = st.objs.find(o => !o.on && S.activeIH(o.go)); return [tp, q ? S.wpos(q.go) : null]; }
     if (st instanceof PesticideStep) { const q = st.pests.find(o => !o.on && S.activeIH(o.go)); return [tp, q ? S.wpos(q.go) : null]; }
     if (st instanceof WaxToolStep) {
-      if (!st.snapped) { const q = st.pl.find(q => !q.done); return q && q.target ? [tp, S.wpos(q.target)] : null; }
-      const q = st.curT; if (!q || !q.back) return null; const b = S.wpos(q.back); const f = q.fin ? S.colCenter(q.fin) : null; return [b, f];
+      if (!st.snapped) { const n = st.nearest(tp || [0, 0]); return n ? [tp, st.grabPoint(n.q)] : null; }
+      const q = st.curT; if (!q || !q.back) return null; return [S.wpos(q.back), st.finPoint(q) || [S.wpos(q.back)[0], S.wpos(q.back)[1] - 1.5]];
     }
     if (st instanceof ScaleObjectStep) { const q = st.pl[st.i]; return q ? [tp, q.col ? S.colCenter(q.col) : q.obj ? S.wpos(q.obj) : null] : null; }
     if (st instanceof FadeObjectStep) { const q = st.pl.find(q => !q.done); return q && q.col ? [tp, S.colCenter(q.col)] : null; }

@@ -34,7 +34,15 @@ window.BOT = {
     if (st instanceof DragAndDropStep) { for (const q of st.pl) { await waitUntil(() => !st.busy); if (q.done) continue; this.down(S.wpos(q.go)); await this.move(S.wpos(q.target || q.snap), 12); this.up(); await sleep(500); } return; }
     if (st instanceof DragToolStep) { for (let k = 0; k < st.pl.length * 2 && !st.finished; k++) { await waitUntil(() => !st.busy); const q = st.pl.find(q => !q.done); if (!q) break; const t = S.wpos(q.target || q.snap); this.down(tp()); await this.pointTo(tp, t, 10); this.up(); await sleep(400); await waitUntil(() => !st.busy); } return; }
     if (st instanceof SweepObjectStep) { for (const o of st.objs) { if (o.gone) continue; const p = S.wpos(o.go); this.down(p); await this.move([p[0] + 4, p[1]], 10); this.up(); await sleep(900); } return; }
-    if (st instanceof WaxToolStep) { for (const q of st.pl) { await waitUntil(() => !st.busy); await this.tap(S.wpos(q.target)); await sleep(300); await waitUntil(() => !st.busy); const b = S.wpos(q.back); this.down(b); await this.move(q.fin ? S.colCenter(q.fin) : [b[0] + 3, b[1]], 16); this.up(); await sleep(600); await waitUntil(() => !st.busy); } return; }
+    if (st instanceof WaxToolStep) {
+      for (const q of st.pl) {
+        if (q.done) continue; await waitUntil(() => !st.busy);
+        this.down(tp()); await this.pointTo(tp, st.grabPoint(q), 10); this.up(); await sleep(200); await waitUntil(() => !st.busy);
+        const b = S.wpos(q.back), f = st.finPoint(q) || [b[0], b[1] - 2];
+        this.down([0, 0]); await this.move([f[0] - b[0], f[1] - b[1]], 14); this.up(); await sleep(300); await waitUntil(() => !st.busy);
+      }
+      return;
+    }
     if (st instanceof ConnectTheDotsStep) { for (const L of st.lines) { this.down(S.colCenter(L.s)); await this.move(S.colCenter(L.e), 12); this.up(); await sleep(200); } return; }
     dbgSkip();
   },

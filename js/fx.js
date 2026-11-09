@@ -241,9 +241,9 @@ const Juice = {
     const cols = ['#ff5a5f', '#ffb52e', '#35c46a', '#3aa0ff', '#b46bff', '#ff7ac8'];
     for (let i = 0; i < n; i++) this.bits.push({ x: rnd(0.1, 0.9), y: rnd(-0.2, 0), vx: rnd(-0.15, 0.15), vy: rnd(0.15, 0.45), r: rnd(0, 6), vr: rnd(-8, 8), s: rnd(6, 12), c: cols[i % cols.length], t: 0, life: rnd(2.2, 3.5) });
   },
-  burst(cx = 0.5, cy = 0.45, n = 28) {
+  burst(cx = 0.5, cy = 0.45, n = 28, flash = true) {
     for (let i = 0; i < n; i++) { const a = Math.random() * Math.PI * 2, v = rnd(0.25, 0.7); this.bits.push({ x: cx, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 0, vr: rnd(-4, 4), s: rnd(8, 16), c: '#fff6c8', star: true, t: 0, life: rnd(0.6, 1.0), drag: 2.2 }); }
-    this.flash = 0.35;
+    if (flash) this.flash = 0.35;
   },
   draw(ctx, W, H, dt) {
     if (this.flash > 0) { ctx.globalAlpha = this.flash; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; this.flash = Math.max(0, this.flash - dt * 1.5); }
